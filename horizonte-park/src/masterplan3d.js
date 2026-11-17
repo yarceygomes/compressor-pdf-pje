@@ -514,6 +514,15 @@ canvas.addEventListener('pointermove', (e) => {
   dragVel = dx * 0.006; dragAz += dragVel;
 });
 const endDrag = () => (dragging = false);
+// modo explorar: roda do mouse aproxima/afasta
+const EXP_OVER = { t: [0, 0, 8], r: mobile ? 150 : 115, pol: 0.86, az: 0.6 };
+let expZoom = 1;
+canvas.addEventListener('wheel', (e) => {
+  if (!HP.mp.explore) return;
+  e.preventDefault();
+  expZoom = Math.max(0.35, Math.min(1.6, expZoom * (1 + Math.sign(e.deltaY) * 0.1)));
+}, { passive: false });
+const expCam = { t: new THREE.Vector3(), r: 100, pol: 0.9, az: 0, init: false };
 canvas.addEventListener('pointerup', endDrag);
 canvas.addEventListener('pointercancel', endDrag);
 
@@ -571,7 +580,7 @@ function frame() {
   const dt = Math.min(clock.getDelta(), 0.05);
   if (!visible) return;
   const time = clock.elapsedTime;
-  const target = HP.reduced ? HP.mp.progress : HP.mp.progress;
+  const target = HP.mp.explore ? 0.77 : HP.mp.progress;
   shownP += (target - shownP) * Math.min(1, dt * 4);
   const p = shownP;
 
@@ -650,6 +659,15 @@ function frame() {
   // câmera
   sampleCam(p);
   if (!dragging) { dragVel *= 0.94; dragAz += dragVel; }
+  if (HP.mp.explore) {
+    if (!expCam.init) { expCam.t.copy(camState.t); expCam.r = camState.r; expCam.pol = camState.pol; expCam.az = camState.az + dragAz; dragAz = 0; expCam.init = true; expZoom = 1; }
+    const g = HP.mp.focus || EXP_OVER, k = Math.min(1, dt * 2.2);
+    expCam.t.x += (g.t[0] - expCam.t.x) * k; expCam.t.y += (g.t[1] - expCam.t.y) * k; expCam.t.z += (g.t[2] - expCam.t.z) * k;
+    expCam.r += (g.r * expZoom * (mobile && HP.mp.focus ? 1.35 : 1) - expCam.r) * k;
+    expCam.pol += (g.pol - expCam.pol) * k;
+    expCam.az += (g.az - expCam.az) * k;
+    camState.t.copy(expCam.t); camState.r = expCam.r; camState.pol = expCam.pol; camState.az = expCam.az;
+  } else if (expCam.init) { expCam.init = false; dragAz = 0; }
   const idle = HP.reduced ? 0 : Math.sin(time * 0.08) * 0.06;
   const az = camState.az + dragAz + idle + mx * 0.08;
   const pol = Math.min(1.35, camState.pol + my * 0.04);
@@ -662,7 +680,7 @@ function frame() {
 
   // rótulos
   LABELS.forEach((l) => {
-    const on = p >= l.r[0] && p < l.r[1];
+    const on = !HP.mp.explore && p >= l.r[0] && p < l.r[1];
     proj.copy(l.v).project(camera);
     const behind = proj.z > 1;
     const x = (proj.x * 0.5 + 0.5) * W, y = (-proj.y * 0.5 + 0.5) * H;
@@ -671,8 +689,21 @@ function frame() {
     l.el.style.transform = `translate(${x}px, ${y - 22}px) translate(-50%, -100%)`;
   });
 
+  // hotspots do modo explorar
+  if (HP.mp.explore && HP.ZONES) {
+    if (!hotEls) hotEls = [...document.querySelectorAll('.mp__hot')];
+    HP.ZONES.forEach((z, i) => {
+      const el = hotEls[i]; if (!el) return;
+      proj.set(z.pos[0], z.pos[1], z.pos[2]).project(camera);
+      const x = (proj.x * 0.5 + 0.5) * W, y = (-proj.y * 0.5 + 0.5) * H;
+      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+      el.classList.toggle('vis', proj.z < 1 && x > 10 && x < W - 10 && y > 70 && y < H - 10);
+    });
+  }
+
   renderer.render(scene, camera);
 }
+let hotEls = null;
 setLots(0);
 setHouses(0);
 frame();
