@@ -65,7 +65,7 @@
   </div>
   <div class="grain" aria-hidden="true"></div>
   <div class="wrap hero__in">
-    <div class="hero__kicker"><span class="dot" aria-hidden="true"></span> Santarém · Oeste do Pará <span aria-hidden="true">—</span> Lotes a partir de 242 m²</div>
+    <div class="hero__kicker"><span class="dot" aria-hidden="true"></span> Santarém · Oeste do Pará <span aria-hidden="true">—</span> Lotes a partir de 242 m² <span aria-hidden="true">—</span> Praia do Juá a 6 min</div>
     <h1 class="h-display">
       <span class="line"><span>A primeira</span></span>
       <span class="line"><span><em>cidade inteligente</em></span></span>
@@ -135,7 +135,7 @@
           <span class="num">01 · Território</span>
           <h3>819 mil m² às margens da Fernando Guilhon</h3>
           <p>O terreno se estende a partir da avenida duplicada que liga o centro de Santarém ao aeroporto e às praias do Tapajós.</p>
-          <ul><li>15 min do centro</li><li>4 min do aeroporto</li></ul>
+          <ul><li>4 min do aeroporto</li><li>6 min da Praia do Juá</li><li>9 min do shopping</li></ul>
         </article>
         <article class="mp__step">
           <span class="num">02 · Malha urbana</span>
@@ -164,7 +164,22 @@
       </div>
       <div class="mp__rail" id="mpRail" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
       <div class="mp__hint" aria-hidden="true">Role ↓ · arraste para girar</div>
+      <button class="mp__explore" id="mpExplore" type="button"><span class="mp__explore-dot" aria-hidden="true"></span>Explorar o bairro <small>8 zonas</small></button>
     </div>
+    <div class="mp__hots" id="mpHots" aria-label="Zonas do bairro"></div>
+    <button class="mp__exit" id="mpExit" type="button">← Voltar ao passeio</button>
+    <aside class="zone" id="zone" aria-hidden="true" aria-live="polite">
+      <div class="zone__top"><span class="zone__eyebrow" id="zEyebrow"></span><span class="zone__badge" id="zBadge"></span></div>
+      <h3 class="zone__title" id="zTitle"></h3>
+      <div class="zone__stats" id="zStats"></div>
+      <p class="zone__desc" id="zDesc"></p>
+      <ol class="zone__list" id="zList"></ol>
+      <div class="zone__actions">
+        <button class="btn" type="button" id="zPhotos">Ver imagens</button>
+        <button class="btn btn--ghost" type="button" id="zBack">Visão geral</button>
+      </div>
+      <div class="zone__nav"><button type="button" id="zPrev" aria-label="Zona anterior">←</button><span id="zCount"></span><button type="button" id="zNext" aria-label="Próxima zona">→</button></div>
+    </aside>
   </div>
 </section>
 
@@ -414,16 +429,20 @@
       <p class="lead" data-reveal>Na Av. Eng. Fernando Guilhon, rota entre o centro, o aeroporto e as praias do Tapajós, em frente ao Centro de Convenções Sebastião Tapajós.</p>
     </div>
 
+    <div class="radar" id="radarWrap">
+      <div class="radar__copy">
+        <p class="radar__k" data-reveal>Raio de vida</p>
+        <p class="radar__big" data-reveal>Praia, shopping, universidade e hospital: <em>tudo em até 13 minutos</em> de carro.</p>
+        <ul class="radar__legend" id="radarLegend"></ul>
+      </div>
+      <div class="radar__chart"><svg id="radar" viewBox="0 0 600 600" role="img" aria-label="Gráfico radial com o tempo de carro do Horizonte Park até praias, compras, educação, saúde, lazer e mobilidade"></svg></div>
+    </div>
+
     <div class="loc__grid">
       <div>
-        <ul class="places" id="places">
-          <li class="place" tabindex="0" data-lat="-2.4427328" data-lng="-54.792275" data-z="16"><span class="place__t">0<small>min</small></span><div><b>Horizonte Park</b><span>Av. Eng. Fernando Guilhon</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
-          <li class="place" tabindex="0" data-lat="-2.4427328" data-lng="-54.792275" data-z="15"><span class="place__t">1<small>min</small></span><div><b>Centro de Convenções Sebastião Tapajós</b><span>Em frente ao empreendimento</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
-          <li class="place" tabindex="0" data-lat="-2.4242" data-lng="-54.7931" data-z="14"><span class="place__t">4<small>min</small></span><div><b>Aeroporto Internacional</b><span>Maestro Wilson Fonseca (SBSN)</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
-          <li class="place" tabindex="0" data-lat="-2.4466102" data-lng="-54.757359" data-z="14"><span class="place__t">6<small>min</small></span><div><b>Rio Tapajós Shopping</b><span>Compras e serviços</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
-          <li class="place" tabindex="0" data-lat="-2.4174311" data-lng="-54.7153808" data-z="13"><span class="place__t">15<small>min</small></span><div><b>Centro de Santarém</b><span>Orla e Encontro das Águas</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
-          <li class="place" tabindex="0" data-lat="-2.516084" data-lng="-54.949739" data-z="12"><span class="place__t">↗</span><div><b>Alter do Chão</b><span>Praias do Tapajós, pela mesma rota</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
-        </ul>
+        <div class="poi-filters" id="poiFilters" role="group" aria-label="Filtrar pontos por categoria"></div>
+        <ul class="places" id="places"></ul>
+        <p class="poi-note">Tempos de carro estimados por rota (OSRM / OpenStreetMap), sem trânsito. Toque em um ponto para ver o caminho no mapa.</p>
         <div class="addr">
           <b>Como chegar</b>
           <p>Av. Eng. Fernando Guilhon, Santarém (PA). O acesso é pela avenida duplicada que segue para o aeroporto.</p>
@@ -444,6 +463,27 @@
       <figure data-reveal><img src="img/encontro-aguas.webp" alt="Pessoa sentada em banco na orla observando o Encontro das Águas, com barco de passageiros" loading="lazy"><figcaption>Encontro das Águas dos rios Tapajós e Amazonas, na orla de Santarém<small>Foto: Wellington Gabler (Wellington-stm) · CC BY 2.0 · Wikimedia Commons</small></figcaption></figure>
       <figure data-reveal><img src="img/alter-do-chao.webp" alt="Praia de areia branca em Alter do Chão com barcos coloridos" loading="lazy"><figcaption>Alter do Chão, o “Caribe amazônico”, pela mesma rota da Fernando Guilhon<small>Foto: idobi · CC BY-SA 3.0 · Wikimedia Commons</small></figcaption></figure>
     </div>
+  </div>
+</section>
+
+<!-- ================= UM DIA ================= -->
+<section class="day dark" id="dia" aria-label="Um dia no Horizonte Park">
+  <div class="wrap day__head">
+    <div>
+      <span class="eyebrow" style="color:var(--lily)">Estilo de vida</span>
+      <h2 class="h-display h2" style="margin-top:18px" data-reveal>Um dia no <em>Horizonte Park</em></h2>
+    </div>
+    <p class="lead" data-reveal>Do nascer do sol no lago ao fim de semana em Alter do Chão: a rotina que a localização permite.</p>
+  </div>
+  <div class="day__track" id="dayTrack">
+    <article class="dcard" style="--sky:linear-gradient(170deg,#f7c59f 0%,#f39c7a 40%,#6a8fb8 100%)"><span class="dcard__t">06h20</span><div class="dcard__min">4<small>min</small></div><h3>Corrida à beira do Lago do Juá</h3><p>O dia começa com natureza a poucos passos de casa.</p><span class="dcard__p">Lago do Juá</span></article>
+    <article class="dcard" style="--sky:linear-gradient(170deg,#9fd3f2 0%,#5aa6dc 55%,#2c6fb0 100%)"><span class="dcard__t">07h30</span><div class="dcard__min">9<small>min</small></div><h3>Aula na UEPA ou na UFOPA</h3><p>As principais universidades da região entre 9 e 12 minutos.</p><span class="dcard__p">Educação</span></article>
+    <article class="dcard" style="--sky:linear-gradient(170deg,#bfe6ff 0%,#7cc4f0 60%,#3c8fd0 100%)"><span class="dcard__t">12h10</span><div class="dcard__min">5<small>min</small></div><h3>Compras rápidas no Assaí</h3><p>O atacado fica na própria Fernando Guilhon.</p><span class="dcard__p">Assaí Atacadista</span></article>
+    <article class="dcard" style="--sky:linear-gradient(170deg,#ffd27a 0%,#f08a4b 45%,#9b3d5a 100%)"><span class="dcard__t">17h40</span><div class="dcard__min">6<small>min</small></div><h3>Fim de tarde na Praia do Juá</h3><p>Areia branca e água doce do Tapajós antes do jantar.</p><span class="dcard__p">Praia do Juá</span></article>
+    <article class="dcard" style="--sky:linear-gradient(170deg,#3b3f78 0%,#25285a 50%,#0f1330 100%)"><span class="dcard__t">20h00</span><div class="dcard__min">9<small>min</small></div><h3>Jantar no Rio Tapajós Shopping</h3><p>Restaurantes, lojas e serviços no maior shopping da cidade.</p><span class="dcard__p">Rio Tapajós Shopping</span></article>
+    <article class="dcard dcard--photo"><img src="img/alter-do-chao.webp" alt="Praia de Alter do Chão com barcos coloridos" loading="lazy"><span class="dcard__t">Sábado</span><div class="dcard__min">36<small>min</small></div><h3>Ilha do Amor, em Alter do Chão</h3><p>O “Caribe amazônico” pela mesma rota da sua casa.</p><span class="dcard__p">Alter do Chão</span></article>
+    <article class="dcard dcard--photo"><img src="img/encontro-aguas.webp" alt="Orla de Santarém com vista para o Encontro das Águas" loading="lazy"><span class="dcard__t">Domingo</span><div class="dcard__min">12<small>min</small></div><h3>Orla e Encontro das Águas</h3><p>O Tapajós encontra o Amazonas diante do calçadão.</p><span class="dcard__p">Orla de Santarém</span></article>
+    <article class="dcard" style="--sky:linear-gradient(170deg,#dfe9f3 0%,#a9c4de 55%,#5c7fa8 100%)"><span class="dcard__t">Viagem</span><div class="dcard__min">4<small>min</small></div><h3>Embarque no aeroporto</h3><p>O Aeroporto Internacional fica logo ali.</p><span class="dcard__p">SBSN</span></article>
   </div>
 </section>
 
@@ -528,6 +568,22 @@
       <a class="btn btn--ghost" href="https://wa.me/5593992262222" target="_blank" rel="noopener">(93) 99226-2222</a>
       <a class="btn btn--ghost" href="mailto:contato@grupohorizontestm.com.br">E-mail</a>
     </div>
+    <form class="visit" id="visit" data-reveal>
+      <p class="visit__t">Agende uma <em>visita</em> ao Horizonte Park</p>
+      <label class="visit__f"><span>Seu nome</span><input type="text" name="nome" autocomplete="name" placeholder="Como podemos te chamar?" required></label>
+      <fieldset class="visit__chips"><legend>Interesse</legend>
+        <label><input type="radio" name="interesse" value="lote residencial" checked><span>Lote residencial</span></label>
+        <label><input type="radio" name="interesse" value="lote comercial"><span>Lote comercial</span></label>
+        <label><input type="radio" name="interesse" value="investimento"><span>Investimento</span></label>
+      </fieldset>
+      <fieldset class="visit__chips"><legend>Melhor período</legend>
+        <label><input type="radio" name="periodo" value="manhã" checked><span>Manhã</span></label>
+        <label><input type="radio" name="periodo" value="tarde"><span>Tarde</span></label>
+        <label><input type="radio" name="periodo" value="sábado"><span>Sábado</span></label>
+      </fieldset>
+      <button class="btn visit__go" type="submit">Agendar pelo WhatsApp →</button>
+      <small>Abre o WhatsApp com a mensagem pronta. Nada é armazenado nesta página.</small>
+    </form>
     <p style="font-size:12.5px;opacity:.7;margin-top:18px" data-reveal>Valor de parcela conforme campanha divulgada no site oficial (2026). Condições, preços e disponibilidade sujeitos a confirmação com o empreendimento.</p>
   </div>
 </section>
@@ -553,9 +609,10 @@
         <ul><li><a href="https://horizontepark.com.br/" target="_blank" rel="noopener">horizontepark.com.br</a></li><li><a href="https://www.instagram.com/horizontepark/" target="_blank" rel="noopener">Instagram @horizontepark</a></li><li><a href="https://www.threads.com/@horizontepark" target="_blank" rel="noopener">Threads</a></li></ul>
       </div>
     </div>
+    <div class="wordmark" aria-hidden="true">Horizonte</div>
     <div class="footer__note">
       <p style="margin:0"><b>Sobre esta página.</b> Apresentação informativa compilada a partir de fontes públicas. Renders, fotos de obra, logotipo e marcas pertencem ao Horizonte Park / Grupo Horizonte (<a href="https://horizontepark.com.br/" target="_blank" rel="noopener">horizontepark.com.br</a>). A maquete 3D é uma interpretação esquemática e não representa a planta aprovada. A posição no mapa é aproximada. Dados como áreas, número de lotes e preços variam entre as fontes (há anúncios que citam mais de 1.300 lotes no total) e devem ser confirmados com o empreendimento.</p>
-      <p style="margin:0">Fontes: <a href="https://horizontepark.com.br/" target="_blank" rel="noopener">site oficial</a> · <a href="https://estruturaimoveis.com.br/imoveis/loteamento-horizonte-park/" target="_blank" rel="noopener">Estrutura Imóveis</a> · <a href="https://diariodopara.com.br/para/governo-entrega-centro-de-convencoes-sebastiao-tapajos-em-santarem/" target="_blank" rel="noopener">Diário do Pará</a> · <a href="https://santarem.pa.gov.br/noticias/infraestrutura/mais-mobilidade-e-turismo-santarem-recebeu-a-duplicacao-av-fernando-guilhon-m2frtn" target="_blank" rel="noopener">Prefeitura de Santarém</a>. Fotos de Santarém: <a href="https://commons.wikimedia.org/wiki/File:Observando_o_encontro_das_%C3%A1guas_(42070272564).jpg" target="_blank" rel="noopener">Wellington Gabler, CC BY 2.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Alter_do_Ch%C3%A3o_487a.jpg" target="_blank" rel="noopener">idobi, CC BY-SA 3.0</a>. Mapa: Esri World Imagery e World Street Map (© Esri, Maxar, HERE, Garmin, © colaboradores do OpenStreetMap). Posições de referência via Nominatim/OpenStreetMap.</p>
+      <p style="margin:0">Fontes: <a href="https://horizontepark.com.br/" target="_blank" rel="noopener">site oficial</a> · <a href="https://estruturaimoveis.com.br/imoveis/loteamento-horizonte-park/" target="_blank" rel="noopener">Estrutura Imóveis</a> · <a href="https://diariodopara.com.br/para/governo-entrega-centro-de-convencoes-sebastiao-tapajos-em-santarem/" target="_blank" rel="noopener">Diário do Pará</a> · <a href="https://santarem.pa.gov.br/noticias/infraestrutura/mais-mobilidade-e-turismo-santarem-recebeu-a-duplicacao-av-fernando-guilhon-m2frtn" target="_blank" rel="noopener">Prefeitura de Santarém</a>. Fotos de Santarém: <a href="https://commons.wikimedia.org/wiki/File:Observando_o_encontro_das_%C3%A1guas_(42070272564).jpg" target="_blank" rel="noopener">Wellington Gabler, CC BY 2.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Alter_do_Ch%C3%A3o_487a.jpg" target="_blank" rel="noopener">idobi, CC BY-SA 3.0</a>. Mapa: Esri World Imagery e World Street Map (© Esri, Maxar, HERE, Garmin, © colaboradores do OpenStreetMap). Posições de referência via Nominatim/OpenStreetMap; tempos e rotas de carro via OSRM (sem trânsito). Trilha sonora original sintetizada no navegador.</p>
     </div>
   </div>
 </footer>
@@ -563,6 +620,19 @@
 <a class="wa-float" href="https://wa.me/5593991472330?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Horizonte%20Park." target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.5z"/></svg>
 </a>
+
+<button class="snd" id="soundBtn" type="button" aria-pressed="false" aria-label="Ligar ou desligar a trilha sonora ambiente">
+  <span class="snd__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="snd__label">Ligar som</span>
+</button>
+
+<!-- visualizador imersivo das zonas -->
+<div class="imm" id="imm" role="dialog" aria-modal="true" aria-label="Imagens da zona" aria-hidden="true">
+  <div class="imm__stage" id="immStage"></div>
+  <div class="imm__shade" aria-hidden="true"></div>
+  <div class="imm__cap"><span class="imm__eyebrow" id="immEyebrow"></span><h3 id="immTitle"></h3></div>
+  <div class="imm__tabs" id="immTabs" role="tablist"></div>
+  <button class="imm__close" id="immClose" type="button" aria-label="Fechar">✕</button>
+</div>
 
 <!-- lightbox -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Visualizador de imagens" aria-hidden="true">
@@ -577,7 +647,10 @@
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="vendor/lenis.min.js"></script>
 <script src="vendor/leaflet.js"></script>
+<script src="js/pois.js"></script>
 <script src="js/main.js"></script>
+<script src="js/explore.js"></script>
 <script src="js/masterplan3d.js"></script>
+<script src="js/ambient.js"></script>
 </body>
 </html>

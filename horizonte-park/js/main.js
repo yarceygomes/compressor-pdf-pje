@@ -152,6 +152,135 @@
     $('#phone').addEventListener('pointerleave', () => (phone.style.transform = ''));
   }
 
+  /* ---------- pontos de interesse: filtros, lista, rotas ---------- */
+  const POIS = (window.HP_POIS || []).slice().sort((a, b) => a.min - b.min);
+  const CATS = window.HP_CATS || {};
+  const poiLayers = {};
+  let routeLayer = null, curCat = 'all';
+  const list = $('#places'), filters = $('#poiFilters');
+  const fmtKm = (k) => String(k).replace('.', ',');
+  if (list && POIS.length) {
+    filters.innerHTML = [['all', 'Tudo', '#0a1c14'], ...Object.entries(CATS).map(([k, [n, c]]) => [k, n, c])]
+      .map(([k, n, c]) => `<button type="button" data-cat="${k}" style="--pc:${c}" class="${k === 'all' ? 'on' : ''}">${n}</button>`).join('');
+    list.innerHTML = POIS.map((o) => `
+      <li class="place" tabindex="0" data-id="${o.id}" data-cat="${o.c}" style="--pc:${(CATS[o.c] || ['', '#5b8ee6'])[1]}">
+        <span class="place__t">${o.min}<small>min</small></span>
+        <div><b>${o.n}</b><span>${(CATS[o.c] || [''])[0]} · ${fmtKm(o.km)} km</span></div>
+        <span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </li>`).join('');
+    filters.addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      curCat = b.dataset.cat;
+      $$('button', filters).forEach((x) => x.classList.toggle('on', x === b));
+      $$('.place', list).forEach((li) => (li.hidden = curCat !== 'all' && li.dataset.cat !== curCat));
+      POIS.forEach((o) => {
+        const m = poiLayers[o.id]; if (!m || !HP.map) return;
+        const show = curCat === 'all' || o.c === curCat;
+        if (show) m.addTo(HP.map); else HP.map.removeLayer(m);
+      });
+      if (HP.map) {
+        const pts = POIS.filter((o) => curCat === 'all' || o.c === curCat).map((o) => [o.lat, o.lng]);
+        pts.push([-2.4427328, -54.792275]);
+        HP.map.flyToBounds(pts, { padding: [50, 50], duration: 1.4, maxZoom: 14 });
+      }
+    });
+    $$('.place', list).forEach((li) => {
+      li.addEventListener('click', () => selectPOI(li.dataset.id, true));
+      li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectPOI(li.dataset.id, true); } });
+    });
+  }
+  function selectPOI(id, fromList) {
+    const o = POIS.find((x) => x.id === id); if (!o) return;
+    $$('.place', list).forEach((li) => li.classList.toggle('on', li.dataset.id === id));
+    if (!fromList) $(`.place[data-id="${id}"]`, list)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    const map = HP.map; if (!map) return;
+    if (routeLayer) map.removeLayer(routeLayer);
+    const col = (CATS[o.c] || ['', '#9ad89a'])[1];
+    routeLayer = L.layerGroup([
+      L.polyline(o.g, { color: '#0a1c14', weight: 8, opacity: 0.35, lineCap: 'round' }),
+      L.polyline(o.g, { color: col, weight: 4.5, opacity: 1, lineCap: 'round', className: 'route-anim' }),
+    ]).addTo(map);
+    map.flyToBounds(L.latLngBounds(o.g), { padding: [60, 60], duration: 1.4, maxZoom: 15 });
+    setTimeout(() => poiLayers[id] && poiLayers[id].openPopup(), 1450);
+  }
+  HP.selectPOI = selectPOI;
+
+  /* ---------- radar: tempo x direção ---------- */
+  (function radar() {
+    const svg = $('#radar'); if (!svg || !POIS.length) return;
+    const NS = 'http://www.w3.org/2000/svg', cx = 300, cy = 300, R = 240, MAX = 15;
+    const o0 = [-2.4427328, -54.792275];
+    const el = (n, a, parent = svg) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+    const rings = el('g', { class: 'rd-rings' });
+    [5, 10, 15].forEach((m) => {
+      el('circle', { cx, cy, r: (m / MAX) * R, class: 'rd-ring' }, rings);
+      el('text', { x: cx + 6, y: cy - (m / MAX) * R - 6, class: 'rd-rt' }, rings).textContent = `${m} min`;
+    });
+    ['N', 'L', 'S', 'O'].forEach((t, i) => {
+      const a = (i * Math.PI) / 2;
+      el('text', { x: cx + Math.sin(a) * (R + 26), y: cy - Math.cos(a) * (R + 26) + 4, class: 'rd-card', 'text-anchor': 'middle' }, rings).textContent = t;
+    });
+    const showLabel = new Set(['jua', 'jua-lago', 'aeroporto', 'assai', 'alter']);
+    const cluster = [];
+    const dots = el('g', { class: 'rd-dots' });
+    POIS.forEach((o) => {
+      const dy = o.lat - o0[0], dx = (o.lng - o0[1]) * Math.cos((o0[0] * Math.PI) / 180);
+      const ang = Math.atan2(dx, dy);
+      const far = o.min > MAX;
+      const r = far ? R + 4 : (o.min / MAX) * R;
+      const x = cx + Math.sin(ang) * r, y = cy - Math.cos(ang) * r;
+      const col = (CATS[o.c] || ['', '#9ad89a'])[1];
+      const g = el('g', { class: 'rd-pt', tabindex: 0, role: 'button', 'aria-label': `${o.n}, ${o.min} minutos` }, dots);
+      el('line', { x1: cx, y1: cy, x2: x, y2: y, class: 'rd-ray', stroke: col }, g);
+      el('circle', { cx: x, cy: y, r: far ? 7 : 6, fill: col, class: 'rd-dot' }, g);
+      el('title', {}, g).textContent = `${o.n} · ${o.min} min`;
+      if (showLabel.has(o.id)) {
+        const ov = { jua: { right: false, dy: -6 }, assai: { dy: 14 }, 'jua-lago': { right: false, dy: -4 } }[o.id] || {};
+        const right = ov.right ?? Math.sin(ang) >= 0;
+        el('text', { x: x + (right ? 11 : -11), y: y + 4 + (ov.dy || 0), 'text-anchor': right ? 'start' : 'end', class: 'rd-lb' }, g).textContent = `${o.n.split(' · ')[0]}${far ? ` · ${o.min} min` : ''}`;
+      }
+      if (o.min >= 9 && !far) cluster.push([x, y]);
+      const go = () => { selectPOI(o.id, false); $('#map') && $('#map').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+      g.addEventListener('click', go);
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+    });
+    if (cluster.length) {
+      const mxc = cluster.reduce((t, p) => t + p[0], 0) / cluster.length, myc = Math.max(...cluster.map((p) => p[1]));
+      const tx = el('text', { x: Math.min(mxc + 30, 590), y: myc + 34, 'text-anchor': 'end', class: 'rd-lb rd-cl' });
+      const t1 = el('tspan', { x: Math.min(mxc + 30, 590), dy: 0 }, tx); t1.textContent = 'Centro da cidade · 9–13 min';
+      const t2 = el('tspan', { x: Math.min(mxc + 30, 590), dy: 17, class: 'rd-sub' }, tx); t2.textContent = 'shopping, UFOPA, UEPA, hospitais, orla';
+    }
+    el('circle', { cx, cy, r: 9, class: 'rd-home' });
+    el('text', { x: cx, y: cy + 28, 'text-anchor': 'middle', class: 'rd-hl' }).textContent = 'Horizonte Park';
+    $('#radarLegend').innerHTML = Object.entries(CATS).map(([k, [n, c]]) => {
+      const items = POIS.filter((o) => o.c === k);
+      return `<li style="--pc:${c}"><b>${n}</b><span>${items.length} ${items.length > 1 ? 'pontos' : 'ponto'} · a partir de ${Math.min(...items.map((o) => o.min))} min</span></li>`;
+    }).join('');
+    if (window.gsap && window.ScrollTrigger && !reduced) {
+      gsap.from('.rd-ring', { scale: 0, transformOrigin: '300px 300px', duration: 1.4, ease: 'expo.out', stagger: 0.15, scrollTrigger: { trigger: svg, start: 'top 80%' } });
+      gsap.from('.rd-pt', { opacity: 0, duration: 0.8, ease: 'power2.out', stagger: 0.04, delay: 0.3, scrollTrigger: { trigger: svg, start: 'top 80%' } });
+    }
+  })();
+
+  /* ---------- "Um dia": arrastar para rolar ---------- */
+  (function dayDrag() {
+    const t = $('#dayTrack'); if (!t) return;
+    let down = false, sx = 0, sl = 0;
+    t.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = true; sx = e.clientX; sl = t.scrollLeft; t.classList.add('drag'); });
+    addEventListener('pointermove', (e) => { if (!down) return; t.scrollLeft = sl - (e.clientX - sx); });
+    addEventListener('pointerup', () => { down = false; t.classList.remove('drag'); });
+  })();
+
+  /* ---------- agendar visita -> WhatsApp ---------- */
+  const visit = $('#visit');
+  if (visit) visit.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(visit);
+    const nome = String(f.get('nome') || '').trim();
+    const msg = `Olá! Meu nome é ${nome}. Gostaria de agendar uma visita ao Horizonte Park (interesse: ${f.get('interesse')}; melhor período: ${f.get('periodo')}).`;
+    window.open('https://wa.me/5593991472330?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  });
+
   /* ---------- mapa (Leaflet) ---------- */
   initMap();
 
@@ -294,25 +423,16 @@
       main.bindPopup('<b>Horizonte Park</b><br>Av. Eng. Fernando Guilhon · Santarém/PA<br><a href="https://www.google.com/maps/dir/?api=1&destination=-2.4427328,-54.792275" target="_blank" rel="noopener">Traçar rota →</a>');
       main.bindTooltip('Horizonte Park', { permanent: true, direction: 'top', offset: [0, -14], className: 'hp-tip' });
 
-      const pois = [
-        { n: 'Aeroporto Internacional Maestro Wilson Fonseca', p: [-2.4242, -54.7931], t: '≈ 4 min' },
-        { n: 'Rio Tapajós Shopping', p: [-2.4466102, -54.757359], t: '≈ 6 min' },
-        { n: 'Lago do Juá', p: [-2.4421895, -54.7857328], t: 'vizinhança' },
-        { n: 'Centro de Santarém', p: [-2.4174311, -54.7153808], t: '≈ 15 min' },
-        { n: 'Alter do Chão', p: [-2.516084, -54.949739], t: 'praias do Tapajós' },
-      ];
-      pois.forEach((o) => {
-        L.marker(o.p, { icon: poiIcon, title: o.n }).addTo(map).bindPopup(`<b>${o.n}</b><br>${o.t} do Horizonte Park`);
-        L.polyline([HPpos, o.p], { color: '#ffffff', weight: 1.5, opacity: 0.55, dashArray: '2 8' }).addTo(map);
-      });
-
-      $$('.place').forEach((li) => {
-        const go = () => {
-          $$('.place').forEach((x) => x.classList.toggle('on', x === li));
-          map.flyTo([+li.dataset.lat, +li.dataset.lng], +li.dataset.z, { duration: 1.6 });
-        };
-        li.addEventListener('click', go);
-        li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+      // pontos de interesse com rota real
+      const C = window.HP_CATS || {};
+      (window.HP_POIS || []).forEach((o) => {
+        const col = (C[o.c] || ['', '#5b8ee6'])[1];
+        const icon = L.divIcon({ className: '', html: `<div class="pin pin--poi" style="--pc:${col}"><i></i></div>`, iconSize: [22, 22], iconAnchor: [11, 11] });
+        const m = L.marker([o.lat, o.lng], { icon, title: o.n }).addTo(map);
+        m.bindTooltip(`${o.n} · ${o.min} min`, { direction: 'top', offset: [0, -10], className: 'hp-tip' });
+        m.bindPopup(`<b>${o.n}</b><br><span class="pop-min">${o.min} min</span> de carro · ${String(o.km).replace('.', ',')} km<br><small>${o.d}</small>`);
+        m.on('click', () => selectPOI(o.id, false));
+        poiLayers[o.id] = m;
       });
       // habilita zoom pela roda apenas após clicar no mapa
       map.on('click', () => map.scrollWheelZoom.enable());
