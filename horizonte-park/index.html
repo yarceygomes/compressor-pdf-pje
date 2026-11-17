@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Horizonte Park · Santarém</title>
+<meta name="description" content="Horizonte Park, loteamento apresentado como a primeira cidade inteligente do Oeste do Pará: 819 mil m², 988 lotes na 1ª etapa, a 4 minutos do aeroporto de Santarém, na Av. Eng. Fernando Guilhon.">
+<meta name="theme-color" content="#0a1c14">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Horizonte Park · Santarém">
+<meta property="og:description" content="819 mil m², 988 lotes, ciclofaixas, Wi-Fi nas áreas comuns e videomonitoramento, na Av. Eng. Fernando Guilhon.">
+<meta property="og:image" content="img/hero.webp">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/fraunces-latin-full-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="img/hero.webp" as="image" imagesrcset="img/hero-sm.webp 800w, img/hero.webp 2400w" imagesizes="100vw">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="css/style.css">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Place",
+  "name":"Loteamento Horizonte Park",
+  "description":"Loteamento residencial e comercial em Santarém (PA), apresentado como a primeira cidade inteligente do Oeste do Pará.",
+  "address":{"@type":"PostalAddress","streetAddress":"Av. Eng. Fernando Guilhon","addressLocality":"Santarém","addressRegion":"PA","addressCountry":"BR"},
+  "geo":{"@type":"GeoCoordinates","latitude":-2.4427328,"longitude":-54.792275},
+  "telephone":"+55-93-99147-2330",
+  "url":"https://horizontepark.com.br/"
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#sobre">Pular para o conteúdo</a>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="wrap nav__in">
+    <a class="brand" href="#inicio" aria-label="Horizonte Park — início">
+      <img src="img/logo-branca.svg" alt="Horizonte Park" width="140" height="44">
+    </a>
+    <nav aria-label="Seções">
+      <ul class="nav__links" id="navlinks">
+        <li><a href="#sobre">O projeto</a></li>
+        <li><a href="#masterplan">Masterplan 3D</a></li>
+        <li><a href="#infraestrutura">Infraestrutura</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#obras">Obras</a></li>
+        <li><a href="#localizacao">Localização</a></li>
+        <li><a href="#noticias">Notícias</a></li>
+      </ul>
+    </nav>
+    <a class="btn nav__cta" href="https://wa.me/5593991472330?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Horizonte%20Park." target="_blank" rel="noopener">Falar no WhatsApp</a>
+    <button class="nav__burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio" aria-label="Apresentação">
+  <div class="hero__media">
+    <img src="img/hero.webp" srcset="img/hero-sm.webp 800w, img/hero.webp 2400w" sizes="100vw" alt="Render aéreo da praça central do Horizonte Park, com pergolados, ciclovia vermelha, playground e muita vegetação" fetchpriority="high">
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap hero__in">
+    <div class="hero__kicker"><span class="dot" aria-hidden="true"></span> Santarém · Oeste do Pará <span aria-hidden="true">—</span> Lotes a partir de 242 m²</div>
+    <h1 class="h-display">
+      <span class="line"><span>A primeira</span></span>
+      <span class="line"><span><em>cidade inteligente</em></span></span>
+      <span class="line"><span>do Oeste do Pará</span></span>
+    </h1>
+    <div class="hero__row">
+      <p>819 mil m² entre a floresta e o Tapajós: ruas pavimentadas, ciclofaixas, Wi-Fi nas áreas comuns, videomonitoramento e aplicativo próprio, a 4 minutos do Aeroporto Internacional de Santarém.</p>
+      <div class="hero__actions">
+        <a class="btn" href="#masterplan">Explorar em 3D
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="#localizacao">Ver no mapa</a>
+      </div>
+    </div>
+    <div class="hero__meta">
+      <span>Av. Eng. <b>Fernando Guilhon</b> · Santarém, PA</span>
+      <span class="scrollcue"><i></i> Role para descobrir</span>
+      <span>2°26′34″S · 54°47′32″O</span>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>Morar</span><span>Empreender</span><span>Investir</span><span>Planejamento</span><span>Tecnologia</span><span>Sustentabilidade</span><span>Pessoas</span>
+    <span>Morar</span><span>Empreender</span><span>Investir</span><span>Planejamento</span><span>Tecnologia</span><span>Sustentabilidade</span><span>Pessoas</span>
+  </div>
+</div>
+
+<!-- ================= SOBRE ================= -->
+<section class="section" id="sobre">
+  <div class="wrap">
+    <div class="about__grid">
+      <div class="about__side">
+        <span class="eyebrow">O projeto</span>
+        <h2 class="h-display h2" style="margin-top:18px">Onde o futuro e a <em>natureza</em> convivem</h2>
+        <div class="about__img" data-parallax-wrap>
+          <img src="img/aerea-vertical.webp" alt="Vista aérea do bairro planejado com quadras de lotes cercadas por mata" loading="lazy" data-parallax>
+        </div>
+      </div>
+      <div>
+        <p class="manifesto" id="manifesto">O Horizonte Park é um bairro planejado na saída de Santarém rumo ao aeroporto e às praias do Tapajós. Foi pensado para morar, empreender e investir: quadras ordenadas, ciclofaixas, praças e parques, um centro comercial integrado e uma camada de tecnologia urbana com Wi-Fi público, aplicativo e monitoramento 24 horas, tudo isso cercado de verde.</p>
+        <div class="stats" role="list">
+          <div class="stat" role="listitem" data-reveal><div class="stat__n"><span data-count="819">0</span><small>mil m²</small></div><div class="stat__l">de área total do empreendimento</div></div>
+          <div class="stat" role="listitem" data-reveal><div class="stat__n"><span data-count="988">0</span></div><div class="stat__l">lotes na 1ª etapa, residenciais e comerciais</div></div>
+          <div class="stat" role="listitem" data-reveal><div class="stat__n"><span data-count="242">0</span><small>m²</small></div><div class="stat__l">área mínima de cada lote</div></div>
+          <div class="stat" role="listitem" data-reveal><div class="stat__n"><span data-count="4">0</span><small>min</small></div><div class="stat__l">até o Aeroporto Internacional Maestro Wilson Fonseca</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MASTERPLAN 3D ================= -->
+<section class="mp" id="masterplan" aria-label="Masterplan em 3D">
+  <div class="mp__pin" id="mpPin">
+    <canvas class="mp__canvas" id="mpCanvas" aria-label="Maquete 3D interativa do loteamento; a câmera se move conforme a rolagem da página" role="img"></canvas>
+    <img class="mp__fallback" src="img/masterplan-rio.webp" alt="Vista aérea do masterplan com o rio ao fundo" loading="lazy">
+    <div class="mp__labels" id="mpLabels" aria-hidden="true"></div>
+    <div class="mp__ui">
+      <div class="mp__head">
+        <span class="eyebrow">Masterplan interativo</span>
+        <h2 class="h-display">Uma cidade, <em>camada por camada</em></h2>
+      </div>
+      <div class="mp__steps" id="mpSteps">
+        <article class="mp__step">
+          <span class="num">01 · Território</span>
+          <h3>819 mil m² às margens da Fernando Guilhon</h3>
+          <p>O terreno se estende a partir da avenida duplicada que liga o centro de Santarém ao aeroporto e às praias do Tapajós.</p>
+          <ul><li>15 min do centro</li><li>4 min do aeroporto</li></ul>
+        </article>
+        <article class="mp__step">
+          <span class="num">02 · Malha urbana</span>
+          <h3>Ruas pavimentadas e ciclofaixas</h3>
+          <p>Um boulevard central parte do portal de entrada. A malha ortogonal organiza as quadras e a ciclofaixa vermelha percorre os eixos principais.</p>
+          <ul><li>Pavimentação intertravada</li><li>Ciclofaixas</li><li>Acessibilidade</li></ul>
+        </article>
+        <article class="mp__step">
+          <span class="num">03 · Lotes</span>
+          <h3>988 lotes na primeira etapa</h3>
+          <p>São lotes residenciais e comerciais a partir de 242 m², versáteis o bastante para a casa da família ou para um negócio voltado à avenida.</p>
+          <ul><li>A partir de 242 m²</li><li>Residencial</li><li>Comercial</li></ul>
+        </article>
+        <article class="mp__step">
+          <span class="num">04 · Verde &amp; lazer</span>
+          <h3>Parques, lago e praças</h3>
+          <p>Reservas de mata, parque linear, praças com pergolados, playgrounds, quadras e academia ao ar livre.</p>
+          <ul><li>Áreas verdes</li><li>Playgrounds</li><li>Academia ao ar livre</li></ul>
+        </article>
+        <article class="mp__step">
+          <span class="num">05 · Cidade inteligente</span>
+          <h3>Quando a noite cai, a tecnologia aparece</h3>
+          <p>Iluminação pública, Wi-Fi nas áreas comuns, videomonitoramento 24 h, aplicativo próprio e pontos de recarga para veículos elétricos.</p>
+          <ul><li>Wi-Fi público</li><li>Videomonitoramento</li><li>App próprio</li></ul>
+        </article>
+      </div>
+      <div class="mp__rail" id="mpRail" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+      <div class="mp__hint" aria-hidden="true">Role ↓ · arraste para girar</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PILARES ================= -->
+<section class="section dark" id="pilares">
+  <div class="wrap">
+    <span class="eyebrow">Conceito</span>
+    <h2 class="h-display h2" style="margin-top:18px;max-width:14ch" data-reveal>Os cinco pilares de uma <em>smart city</em></h2>
+    <div class="pillars">
+      <article class="pillar" data-reveal>
+        <span class="pillar__i">i.</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="6" width="36" height="36" rx="2"/><path d="M6 20h36M20 6v36M30 20v22"/></svg>
+        <div><h3>Planejamento</h3><p>Malha viária, quadras e usos distribuídos desde a origem do projeto.</p></div>
+      </article>
+      <article class="pillar" data-reveal>
+        <span class="pillar__i">ii.</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 20a20 20 0 0 1 28 0M15 26a12 12 0 0 1 18 0M20 32a5 5 0 0 1 8 0"/><circle cx="24" cy="37" r="1.6"/></svg>
+        <div><h3>Tecnologia</h3><p>Wi-Fi nas áreas comuns, aplicativo próprio e videomonitoramento.</p></div>
+      </article>
+      <article class="pillar" data-reveal>
+        <span class="pillar__i">iii.</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="16" cy="18" r="5"/><circle cx="32" cy="18" r="5"/><path d="M6 38c1-6 5-10 10-10s9 4 10 10M22 38c1-6 5-10 10-10s9 4 10 10"/></svg>
+        <div><h3>Social</h3><p>Praças, quadras e áreas de convivência que formam comunidade.</p></div>
+      </article>
+      <article class="pillar" data-reveal>
+        <span class="pillar__i">iv.</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42V22M24 22c0-8 6-14 16-14 0 10-6 16-16 14zM24 28c0-6-5-11-14-11 0 8 5 12 14 11z"/></svg>
+        <div><h3>Sustentabilidade</h3><p>Parques e áreas verdes integrados ao desenho urbano.</p></div>
+      </article>
+      <article class="pillar" data-reveal>
+        <span class="pillar__i">v.</span>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 40s-14-8.5-14-19a8 8 0 0 1 14-5.3A8 8 0 0 1 38 21c0 10.5-14 19-14 19z"/></svg>
+        <div><h3>Pessoas</h3><p>Qualidade de vida e segurança para a família no dia a dia.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INFRAESTRUTURA ================= -->
+<section class="section" id="infraestrutura">
+  <div class="wrap">
+    <div class="infra__head">
+      <div>
+        <span class="eyebrow">Infraestrutura</span>
+        <h2 class="h-display h2" style="margin-top:18px;max-width:12ch" data-reveal>Tudo pensado para o <em>dia a dia</em></h2>
+      </div>
+      <p class="lead" data-reveal>Lazer, educação, comércio e segurança no mesmo lugar: playgrounds, churrasqueiras, centro comercial, vagas para visitantes, recarga para veículos elétricos e monitoramento 24 horas.</p>
+    </div>
+
+    <div class="bento">
+      <div class="tile tile--img c-7 r-2" data-reveal>
+        <img src="img/rua-ciclofaixa.webp" alt="Rua arborizada com ciclofaixa vermelha e calçadas largas" loading="lazy">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3.5"/><circle cx="18" cy="17" r="3.5"/><path d="M6 17l4-8h6l2 8M10 9l-1-3H7M14 9l-2 8"/></svg></span>
+        <h3>Ciclofaixas e ruas pavimentadas</h3>
+        <p>Mobilidade ativa nos eixos principais, com calçadas acessíveis e arborização.</p>
+      </div>
+      <div class="tile tile--accent c-5" data-reveal>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a5.5 5.5 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1"/><path d="M2 9a15 15 0 0 1 20 0"/></svg></span>
+        <h3>Wi-Fi nas áreas comuns</h3>
+        <p>Conectividade nas praças e espaços públicos do bairro.</p>
+      </div>
+      <div class="tile tile--river c-5" data-reveal>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 7h12l3 3v4l-3 3H3z"/><circle cx="9" cy="12" r="2.5"/><path d="M18 10l3-2v8l-3-2"/></svg></span>
+        <h3>Videomonitoramento 24 h</h3>
+        <p>Monitoramento das áreas públicas, controle de acesso e rondas frequentes.</p>
+      </div>
+      <div class="tile tile--img c-4 r-2" data-reveal>
+        <img src="img/playground.webp" alt="Playground colorido em praça com palmeiras" loading="lazy">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 21V8l4-4 4 4v13M12 12h6l2 9M8 21v-5"/></svg></span>
+        <h3>Playgrounds e churrasqueiras</h3>
+        <p>Lazer para as crianças e para os encontros de fim de semana.</p>
+      </div>
+      <div class="tile tile--img c-4 r-2" data-reveal>
+        <img src="img/quadras.webp" alt="Quadras esportivas cercadas com piso azul e verde" loading="lazy">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span>
+        <h3>Quadras e academia ao ar livre</h3>
+        <p>Esporte e saúde nas praças do bairro.</p>
+      </div>
+      <div class="tile tile--img c-4 r-2" data-reveal>
+        <img src="img/centro-comercial.webp" alt="Centro comercial térreo com palmeiras imperiais na frente" loading="lazy">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0zM5 13v8h14v-8M10 21v-5h4v5"/></svg></span>
+        <h3>Centro comercial integrado</h3>
+        <p>Lojas, mercado e conveniências a poucos passos de casa.</p>
+      </div>
+      <div class="tile c-4" data-reveal>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v3M5 5l2 2M19 5l-2 2M8 14a4 4 0 1 1 8 0c0 2-2 3-2 5h-4c0-2-2-3-2-5zM10 22h4"/></svg></span>
+        <h3>Iluminação pública</h3>
+        <p>Ruas e praças iluminadas para usar a cidade também à noite.</p>
+      </div>
+      <div class="tile c-4" data-reveal>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+        <h3>Rede de distribuição de água</h3>
+        <p>Infraestrutura de abastecimento implantada em toda a malha.</p>
+      </div>
+      <div class="tile c-4" data-reveal>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span>
+        <h3>Recarga para veículos elétricos</h3>
+        <p>Pontos de recarga e vagas para visitantes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TECNOLOGIA / APP ================= -->
+<section class="section dark tech" id="tecnologia">
+  <div class="wrap tech__grid">
+    <div>
+      <span class="eyebrow">Tecnologia</span>
+      <h2 class="h-display h2" style="margin-top:18px" data-reveal>O bairro <em>no seu bolso</em></h2>
+      <p class="lead" style="margin-top:24px" data-reveal>O aplicativo próprio do Horizonte Park concentra a comunicação com o empreendimento. Junto com o Wi-Fi público e o monitoramento, forma a camada digital da cidade inteligente.</p>
+      <ul class="feature-list">
+        <li data-reveal><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg><div><b>Aplicativo próprio</b><span>Canal direto com o empreendimento.</span></div></li>
+        <li data-reveal><svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a5.5 5.5 0 0 1 8 0"/><circle cx="12" cy="18.5" r="1"/></svg><div><b>Wi-Fi nas áreas comuns</b><span>Praças e espaços de convivência conectados.</span></div></li>
+        <li data-reveal><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><div><b>Segurança 24 horas</b><span>Videomonitoramento, controle de acesso e rondas.</span></div></li>
+      </ul>
+    </div>
+    <div class="tech__phone" id="phone">
+      <img src="img/app.webp" alt="Dois smartphones exibindo o site e a galeria do Horizonte Park" loading="lazy" width="900" height="1169">
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALERIA ================= -->
+<section class="gallery" id="galeria" aria-label="Galeria de imagens do projeto">
+  <div class="wrap gallery__head">
+    <div>
+      <span class="eyebrow">Galeria</span>
+      <h2 class="h-display h2" style="margin-top:18px" data-reveal>Passeie pelo <em>projeto</em></h2>
+    </div>
+    <p class="gallery__count"><span id="gIdx">01</span> / <span id="gTot">12</span> &nbsp;·&nbsp; Renders do projeto</p>
+  </div>
+  <div class="gallery__pin" id="galleryPin">
+    <div class="gallery__track" id="galleryTrack">
+      <figure class="gcard" data-full="img/aerea-praca.webp"><div class="ph"><img src="img/aerea-praca-sm.webp" alt="Praça central vista do alto, ao lado da avenida" loading="lazy"></div><figcaption><b>Praça central</b><span>vista aérea</span></figcaption></figure>
+      <figure class="gcard" data-full="img/praca-arco.webp"><div class="ph"><img src="img/praca-arco.webp" alt="Escultura em arco de madeira em praça pavimentada" loading="lazy"></div><figcaption><b>Praça do Arco</b><span>convivência</span></figcaption></figure>
+      <figure class="gcard" data-full="img/portal.webp"><div class="ph"><img src="img/portal-sm.webp" alt="Portal de entrada com rotatória e totem" loading="lazy"></div><figcaption><b>Portal de entrada</b><span>rotatória e totem</span></figcaption></figure>
+      <figure class="gcard" data-full="img/aerea-avenida.webp"><div class="ph"><img src="img/aerea-avenida-sm.webp" alt="Boulevard central cortando a mata, com quadras ao fundo" loading="lazy"></div><figcaption><b>Boulevard e reserva verde</b><span>vista aérea</span></figcaption></figure>
+      <figure class="gcard" data-full="img/cafe.webp"><div class="ph"><img src="img/cafe.webp" alt="Varanda de café com mesas e vista para a praça" loading="lazy"></div><figcaption><b>Café na praça</b><span>comércio</span></figcaption></figure>
+      <figure class="gcard" data-full="img/pergolados.webp"><div class="ph"><img src="img/pergolados-sm.webp" alt="Pergolados em forma de árvore sobre deck de madeira" loading="lazy"></div><figcaption><b>Pergolados</b><span>praça de sombra</span></figcaption></figure>
+      <figure class="gcard" data-full="img/rua-ipes.webp"><div class="ph"><img src="img/rua-ipes.webp" alt="Rua residencial arborizada com casas modernas" loading="lazy"></div><figcaption><b>Rua residencial</b><span>arborização</span></figcaption></figure>
+      <figure class="gcard" data-full="img/lazer-piscina.webp"><div class="ph"><img src="img/lazer-piscina.webp" alt="Área de lazer com espelho d'água e brinquedos" loading="lazy"></div><figcaption><b>Área de lazer</b><span>parque</span></figcaption></figure>
+      <figure class="gcard" data-full="img/aerea-bairro.webp"><div class="ph"><img src="img/aerea-bairro-sm.webp" alt="Quadras residenciais, lago e centro comercial vistos do alto" loading="lazy"></div><figcaption><b>Bairro e lago</b><span>vista aérea</span></figcaption></figure>
+      <figure class="gcard" data-full="img/playground-aerea.webp"><div class="ph"><img src="img/playground-aerea-sm.webp" alt="Playground e ciclovia em praça vista de cima" loading="lazy"></div><figcaption><b>Parque infantil</b><span>ciclovia</span></figcaption></figure>
+      <figure class="gcard" data-full="img/pista.webp"><div class="ph"><img src="img/pista.webp" alt="Pista de caminhada vermelha ao lado de quadra" loading="lazy"></div><figcaption><b>Pista de caminhada</b><span>esporte</span></figcaption></figure>
+      <figure class="gcard" data-full="img/masterplan-rio.webp"><div class="ph"><img src="img/masterplan-rio.webp" alt="Masterplan completo com o rio Tapajós ao fundo" loading="lazy"></div><figcaption><b>Masterplan completo</b><span>com o Tapajós ao fundo</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OBRAS ================= -->
+<section class="section dark" id="obras">
+  <div class="wrap works__grid">
+    <aside class="works__aside">
+      <span class="eyebrow">Andamento</span>
+      <h2 class="h-display h2" style="margin-top:18px">Do render à <em>realidade</em></h2>
+      <p class="lead" style="margin-top:22px">Registros de obra publicados pelo empreendimento, em ordem cronológica: terraplenagem, drenagem, redes e pavimentação.</p>
+      <div class="phase">
+        <div class="phase__item"><svg class="phase__ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="4"/><circle cx="22" cy="22" r="18" fill="none" stroke="#9ad89a" stroke-width="4" stroke-dasharray="113" stroke-dashoffset="34" transform="rotate(-90 22 22)" stroke-linecap="round"/></svg><div><b>Etapa 1</b><small>988 lotes · infraestrutura em execução</small></div><span class="badge badge--live">Em obras</span></div>
+        <div class="phase__item"><svg class="phase__ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="4"/><circle cx="22" cy="22" r="18" fill="none" stroke="#9ad89a" stroke-width="4" stroke-dasharray="113" stroke-dashoffset="95" transform="rotate(-90 22 22)" stroke-linecap="round"/></svg><div><b>Etapa 2</b><small>“Obra em andamento”, segundo o site oficial</small></div><span class="badge">Iniciada</span></div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted-inv);margin-top:14px">Os anéis são ilustrativos. O empreendimento não divulga percentual de execução.</p>
+    </aside>
+
+    <div class="timeline" id="timeline">
+      <div class="timeline__bar" id="tlBar" aria-hidden="true"></div>
+
+      <article class="tl">
+        <span class="tl__date">Projeto · 2024</span>
+        <h3>Lançamento e projeto urbanístico</h3>
+        <p>Os renders do bairro são apresentados ao público: portal com rotatória, boulevard arborizado, praças com pergolados, quadras e centro comercial.</p>
+        <div class="compare">
+          <figure><img src="img/portal.webp" alt="Render do portal de entrada com totem na rotatória" loading="lazy"><figcaption>Projeto</figcaption></figure>
+          <figure><img src="img/obra-totem.webp" alt="Foto real do totem do Horizonte Park instalado na rotatória de entrada" loading="lazy"><figcaption>Realidade</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="tl">
+        <span class="tl__date">Registros publicados em jun/2025</span>
+        <h3>Meio-fio, drenagem e primeiras calçadas</h3>
+        <p>Execução de bocas de lobo e caixas de passagem, assentamento de meio-fio, armação para concreto e início do piso intertravado na entrada.</p>
+        <div class="mosaic" data-lb-group="obras1">
+          <button data-full="img/obra-01.webp" aria-label="Ampliar foto: calçada e meio-fio"><img src="img/obra-01.webp" alt="Calçada com piso intertravado e meio-fio em execução" loading="lazy"></button>
+          <button data-full="img/obra-05.webp" aria-label="Ampliar foto: retroescavadeira"><img src="img/obra-05.webp" alt="Retroescavadeira abrindo vala" loading="lazy"></button>
+          <button data-full="img/obra-06.webp" aria-label="Ampliar foto: drenagem"><img src="img/obra-06.webp" alt="Operário assentando blocos de caixa de drenagem" loading="lazy"></button>
+          <button data-full="img/obra-07.webp" aria-label="Ampliar foto: concretagem"><img src="img/obra-07.webp" alt="Caminhão betoneira concretando base armada" loading="lazy"></button>
+          <button data-full="img/obra-09.webp" aria-label="Ampliar foto: vista aérea da entrada"><img src="img/obra-09.webp" alt="Vista aérea da área de entrada com terraplenagem" loading="lazy"></button>
+          <button data-full="img/obra-11.webp" aria-label="Ampliar foto: piso intertravado"><img src="img/obra-11.webp" alt="Operário assentando piso intertravado" loading="lazy"></button>
+        </div>
+      </article>
+
+      <article class="tl">
+        <span class="tl__date">Registros publicados em dez/2025</span>
+        <h3>Do alto: terraplenagem e galerias pluviais</h3>
+        <p>Imagens de drone mostram a abertura da malha viária na mata, as valas de drenagem e a chegada dos tubos de concreto para as galerias.</p>
+        <div class="mosaic mosaic--4" data-lb-group="obras2">
+          <button data-full="img/drone-05.webp" aria-label="Ampliar foto aérea"><img src="img/drone-05.webp" alt="Vista de drone da malha viária aberta entre a vegetação" loading="lazy"></button>
+          <button data-full="img/drone-01.webp" aria-label="Ampliar foto aérea"><img src="img/drone-01.webp" alt="Ruas de terra recém-abertas vistas do alto" loading="lazy"></button>
+          <button data-full="img/drone-04.webp" aria-label="Ampliar foto aérea"><img src="img/drone-04.webp" alt="Tubos de concreto alinhados ao lado de vala" loading="lazy"></button>
+          <button data-full="img/drone-08.webp" aria-label="Ampliar foto aérea"><img src="img/drone-08.webp" alt="Escavadeira manuseando tubos de concreto" loading="lazy"></button>
+          <button data-full="img/drone-02.webp" aria-label="Ampliar foto aérea"><img src="img/drone-02.webp" alt="Valas de drenagem cruzando as quadras" loading="lazy"></button>
+          <button data-full="img/drone-03.webp" aria-label="Ampliar foto aérea"><img src="img/drone-03.webp" alt="Vala longa com tubos ao lado e mata ao fundo" loading="lazy"></button>
+          <button data-full="img/drone-09.webp" aria-label="Ampliar foto aérea"><img src="img/drone-09.webp" alt="Tubos corrugados empilhados vistos de cima" loading="lazy"></button>
+          <button data-full="img/drone-11.webp" aria-label="Ampliar foto aérea"><img src="img/drone-11.webp" alt="Trator em terraplenagem visto de cima" loading="lazy"></button>
+        </div>
+      </article>
+
+      <article class="tl">
+        <span class="tl__date">Registros publicados em jun/2026</span>
+        <h3>Pavimentação hexagonal e redes</h3>
+        <p>As ruas recebem o piso intertravado hexagonal e as redes enterradas avançam. A paisagem começa a se parecer com o projeto.</p>
+        <div class="mosaic" data-lb-group="obras3">
+          <button data-full="img/obra-2026-2.webp" aria-label="Ampliar foto: rua pavimentada"><img src="img/obra-2026-2.webp" alt="Rua com piso intertravado concluído" loading="lazy"></button>
+          <button data-full="img/obra-2026-5.webp" aria-label="Ampliar foto: pavimentação"><img src="img/obra-2026-5.webp" alt="Operário com capacete amarelo assentando pavers hexagonais" loading="lazy"></button>
+          <button data-full="img/obra-2026-7.webp" aria-label="Ampliar foto: rede"><img src="img/obra-2026-7.webp" alt="Vala com tubulação e caixa de inspeção" loading="lazy"></button>
+          <button data-full="img/obra-2026-1.webp" aria-label="Ampliar foto: rua"><img src="img/obra-2026-1.webp" alt="Cruzamento pavimentado com poste e totem" loading="lazy"></button>
+          <button data-full="img/obra-2026-3.webp" aria-label="Ampliar foto: acabamento"><img src="img/obra-2026-3.webp" alt="Operário ajustando pavers junto ao tapume" loading="lazy"></button>
+          <button data-full="img/obra-2026-6.webp" aria-label="Ampliar foto: assentamento"><img src="img/obra-2026-6.webp" alt="Operário de uniforme azul assentando pavers" loading="lazy"></button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VÍDEO ================= -->
+<section class="section" id="video" style="padding-bottom:0">
+  <div class="wrap">
+    <span class="eyebrow">Filme</span>
+    <h2 class="h-display h2" style="margin-top:18px" data-reveal>Conheça o <em>Horizonte Park</em></h2>
+    <div class="video" id="video" data-reveal>
+      <button type="button" aria-label="Reproduzir vídeo de apresentação do Horizonte Park (YouTube)">
+        <img src="img/aerea-bairro.webp" alt="" loading="lazy">
+        <span class="play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></span>
+        <span class="vlabel">Vídeo oficial · YouTube</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOCALIZAÇÃO ================= -->
+<section class="section" id="localizacao">
+  <div class="wrap">
+    <div class="infra__head">
+      <div>
+        <span class="eyebrow">Localização</span>
+        <h2 class="h-display h2" style="margin-top:18px;max-width:13ch" data-reveal>No eixo que move <em>Santarém</em></h2>
+      </div>
+      <p class="lead" data-reveal>Na Av. Eng. Fernando Guilhon, rota entre o centro, o aeroporto e as praias do Tapajós, em frente ao Centro de Convenções Sebastião Tapajós.</p>
+    </div>
+
+    <div class="loc__grid">
+      <div>
+        <ul class="places" id="places">
+          <li class="place" tabindex="0" data-lat="-2.4427328" data-lng="-54.792275" data-z="16"><span class="place__t">0<small>min</small></span><div><b>Horizonte Park</b><span>Av. Eng. Fernando Guilhon</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
+          <li class="place" tabindex="0" data-lat="-2.4427328" data-lng="-54.792275" data-z="15"><span class="place__t">1<small>min</small></span><div><b>Centro de Convenções Sebastião Tapajós</b><span>Em frente ao empreendimento</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
+          <li class="place" tabindex="0" data-lat="-2.4242" data-lng="-54.7931" data-z="14"><span class="place__t">4<small>min</small></span><div><b>Aeroporto Internacional</b><span>Maestro Wilson Fonseca (SBSN)</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
+          <li class="place" tabindex="0" data-lat="-2.4466102" data-lng="-54.757359" data-z="14"><span class="place__t">6<small>min</small></span><div><b>Rio Tapajós Shopping</b><span>Compras e serviços</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
+          <li class="place" tabindex="0" data-lat="-2.4174311" data-lng="-54.7153808" data-z="13"><span class="place__t">15<small>min</small></span><div><b>Centro de Santarém</b><span>Orla e Encontro das Águas</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
+          <li class="place" tabindex="0" data-lat="-2.516084" data-lng="-54.949739" data-z="12"><span class="place__t">↗</span><div><b>Alter do Chão</b><span>Praias do Tapajós, pela mesma rota</span></div><span class="place__go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span></li>
+        </ul>
+        <div class="addr">
+          <b>Como chegar</b>
+          <p>Av. Eng. Fernando Guilhon, Santarém (PA). O acesso é pela avenida duplicada que segue para o aeroporto.</p>
+          <div class="row">
+            <a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=-2.4427328,-54.792275" target="_blank" rel="noopener">Abrir no Google Maps</a>
+            <a class="btn btn--ghost" href="https://waze.com/ul?ll=-2.4427328,-54.792275&amp;navigate=yes" target="_blank" rel="noopener">Waze</a>
+          </div>
+        </div>
+      </div>
+      <div class="map">
+        <div id="map" role="region" aria-label="Mapa interativo com a localização do Horizonte Park e pontos de referência"></div>
+        <div class="map__switch" role="group" aria-label="Tipo de mapa"><button type="button" class="on" data-layer="sat">Satélite</button><button type="button" data-layer="map">Mapa</button></div>
+        <div class="map__coords">-2,44273 · -54,79228</div>
+      </div>
+    </div>
+
+    <div class="city">
+      <figure data-reveal><img src="img/encontro-aguas.webp" alt="Pessoa sentada em banco na orla observando o Encontro das Águas, com barco de passageiros" loading="lazy"><figcaption>Encontro das Águas dos rios Tapajós e Amazonas, na orla de Santarém<small>Foto: Wellington Gabler (Wellington-stm) · CC BY 2.0 · Wikimedia Commons</small></figcaption></figure>
+      <figure data-reveal><img src="img/alter-do-chao.webp" alt="Praia de areia branca em Alter do Chão com barcos coloridos" loading="lazy"><figcaption>Alter do Chão, o “Caribe amazônico”, pela mesma rota da Fernando Guilhon<small>Foto: idobi · CC BY-SA 3.0 · Wikimedia Commons</small></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NOTÍCIAS ================= -->
+<section class="section" id="noticias" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="infra__head">
+      <div>
+        <span class="eyebrow">Na mídia &amp; contexto</span>
+        <h2 class="h-display h2" style="margin-top:18px;max-width:12ch" data-reveal>O entorno <em>em transformação</em></h2>
+      </div>
+      <p class="lead" data-reveal>A região do Horizonte Park concentra investimentos públicos recentes, como a duplicação da avenida e o novo centro de convenções.</p>
+    </div>
+    <div class="news">
+      <a class="news__card news__card--feature" href="https://diariodopara.com.br/para/governo-entrega-centro-de-convencoes-sebastiao-tapajos-em-santarem/" target="_blank" rel="noopener" data-reveal>
+        <img src="img/drone-05.webp" alt="" loading="lazy">
+        <div class="news__src"><span>Diário do Pará</span><time datetime="2023-11-10">10 nov 2023</time></div>
+        <h3>Governo entrega o Centro de Convenções Sebastião Tapajós, vizinho ao Horizonte Park</h3>
+        <p>O complexo tem cerca de 10 mil m² e auditórios para até 1.200 pessoas. Foi erguido com cerca de R$ 70 milhões do Estado na Av. Fernando Guilhon e recebeu a FITA em 2024.</p>
+        <span class="news__more">Ler reportagem <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="news__card" href="https://santarem.pa.gov.br/noticias/infraestrutura/mais-mobilidade-e-turismo-santarem-recebeu-a-duplicacao-av-fernando-guilhon-m2frtn" target="_blank" rel="noopener" data-reveal>
+        <div class="news__src"><span>Prefeitura de Santarém</span><span>Infraestrutura</span></div>
+        <h3>Santarém recebe a duplicação da Av. Fernando Guilhon</h3>
+        <p>Obra estadual de mais de R$ 19 milhões que amplia a mobilidade e o acesso turístico pelo eixo do aeroporto.</p>
+        <span class="news__more">Ler notícia <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="news__card" href="https://noticiamarajo.com.br/para/centro-de-convencoes-sebastiao-tapajos-insere-santarem-na-rota-dos-grandes-eventos/" target="_blank" rel="noopener" data-reveal>
+        <div class="news__src"><span>Notícia Marajó</span><span>Turismo</span></div>
+        <h3>Centro de Convenções insere Santarém na rota dos grandes eventos</h3>
+        <p>O novo equipamento posiciona o eixo Fernando Guilhon como polo de eventos do Baixo Amazonas.</p>
+        <span class="news__more">Ler notícia <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="news__card" href="https://www.threads.com/@horizontepark" target="_blank" rel="noopener" data-reveal>
+        <div class="news__src"><span>@horizontepark</span><span>Comercial</span></div>
+        <h3>Mega Feirão Horizonte Park</h3>
+        <p>O perfil oficial divulgou uma campanha com lotes “100% documentados” e R$ 10 mil de desconto. Confirme se ainda está em vigor.</p>
+        <span class="news__more">Ver perfil <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </a>
+      <a class="news__card" href="https://horizontepark.com.br/" target="_blank" rel="noopener" data-reveal>
+        <div class="news__src"><span>Site oficial</span><span>Obras</span></div>
+        <h3>Etapa 2 com “obra em andamento”</h3>
+        <p>O site oficial divide o projeto em duas etapas e informa obra em andamento, com galeria de registros de drone e de campo.</p>
+        <span class="news__more">Visitar site <svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GRUPO ================= -->
+<section class="section" id="grupo">
+  <div class="wrap">
+    <span class="eyebrow">Quem realiza</span>
+    <h2 class="h-display h2" style="margin-top:18px;max-width:14ch" data-reveal>O legado do <em>Grupo Horizonte</em></h2>
+    <p class="lead" style="margin-top:22px" data-reveal>Antes do Horizonte Park, o grupo assinou em Santarém empreendimentos verticais de alto padrão com lazer completo.</p>
+    <div class="legacy">
+      <article data-reveal>
+        <div class="ph"><img src="img/manhattan.webp" alt="Edifício Manhattan Residence visto de cima" loading="lazy"></div>
+        <div class="bd"><span class="tag">23 andares</span><h3>Manhattan Residence</h3><p>Piscinas adulto e infantil, quadra poliesportiva, academia, salão de beleza, conveniência, salão de festas, brinquedoteca e parquinho.</p></div>
+      </article>
+      <article data-reveal>
+        <div class="ph"><img src="img/riviera.webp" alt="Torres do Riviera Special Home vistas de cima" loading="lazy"></div>
+        <div class="bd"><span class="tag">2 torres · 16 e 17 andares</span><h3>Riviera Special Home</h3><p>Piscina semiolímpica, espaço gourmet, coworking, lavanderia, sala de vídeo, academia, brinquedoteca e parquinho.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta" id="contato">
+  <div class="cta__bg"><img src="img/aerea-avenida.webp" alt="" loading="lazy" data-parallax></div>
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--lily)">Contato</span>
+    <h2 class="h-display" style="margin-top:20px" data-reveal>Seu lugar no <em>horizonte</em></h2>
+    <p data-reveal>Lotes residenciais e comerciais a partir de 242 m², com pagamento parcelado direto com o empreendimento. Fale com a equipe comercial.</p>
+    <div class="cta__price" data-reveal><span>parcelas a partir de</span><b>R$ 797,00</b></div>
+    <div class="cta__actions" data-reveal>
+      <a class="btn" href="https://wa.me/5593991472330?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Horizonte%20Park." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.5z"/></svg>
+        (93) 99147-2330
+      </a>
+      <a class="btn btn--ghost" href="https://wa.me/5593992262222" target="_blank" rel="noopener">(93) 99226-2222</a>
+      <a class="btn btn--ghost" href="mailto:contato@grupohorizontestm.com.br">E-mail</a>
+    </div>
+    <p style="font-size:12.5px;opacity:.7;margin-top:18px" data-reveal>Valor de parcela conforme campanha divulgada no site oficial (2026). Condições, preços e disponibilidade sujeitos a confirmação com o empreendimento.</p>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <img class="footer__logo" src="img/logo-branca.svg" alt="Horizonte Park" width="200" height="70" loading="lazy">
+        <p style="color:var(--muted-inv);max-width:34ch;margin:0">A primeira cidade inteligente do Oeste do Pará, para morar, trabalhar e prosperar com conforto e segurança.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul><li><a href="#sobre">O projeto</a></li><li><a href="#masterplan">Masterplan 3D</a></li><li><a href="#infraestrutura">Infraestrutura</a></li><li><a href="#obras">Obras</a></li><li><a href="#localizacao">Localização</a></li></ul>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <ul><li><a href="tel:+5593991472330">(93) 99147-2330</a></li><li><a href="tel:+5593992262222">(93) 99226-2222</a></li><li><a href="mailto:contato@grupohorizontestm.com.br">contato@grupohorizontestm.com.br</a></li></ul>
+      </div>
+      <div>
+        <h4>Oficial</h4>
+        <ul><li><a href="https://horizontepark.com.br/" target="_blank" rel="noopener">horizontepark.com.br</a></li><li><a href="https://www.instagram.com/horizontepark/" target="_blank" rel="noopener">Instagram @horizontepark</a></li><li><a href="https://www.threads.com/@horizontepark" target="_blank" rel="noopener">Threads</a></li></ul>
+      </div>
+    </div>
+    <div class="footer__note">
+      <p style="margin:0"><b>Sobre esta página.</b> Apresentação informativa compilada a partir de fontes públicas. Renders, fotos de obra, logotipo e marcas pertencem ao Horizonte Park / Grupo Horizonte (<a href="https://horizontepark.com.br/" target="_blank" rel="noopener">horizontepark.com.br</a>). A maquete 3D é uma interpretação esquemática e não representa a planta aprovada. A posição no mapa é aproximada. Dados como áreas, número de lotes e preços variam entre as fontes (há anúncios que citam mais de 1.300 lotes no total) e devem ser confirmados com o empreendimento.</p>
+      <p style="margin:0">Fontes: <a href="https://horizontepark.com.br/" target="_blank" rel="noopener">site oficial</a> · <a href="https://estruturaimoveis.com.br/imoveis/loteamento-horizonte-park/" target="_blank" rel="noopener">Estrutura Imóveis</a> · <a href="https://diariodopara.com.br/para/governo-entrega-centro-de-convencoes-sebastiao-tapajos-em-santarem/" target="_blank" rel="noopener">Diário do Pará</a> · <a href="https://santarem.pa.gov.br/noticias/infraestrutura/mais-mobilidade-e-turismo-santarem-recebeu-a-duplicacao-av-fernando-guilhon-m2frtn" target="_blank" rel="noopener">Prefeitura de Santarém</a>. Fotos de Santarém: <a href="https://commons.wikimedia.org/wiki/File:Observando_o_encontro_das_%C3%A1guas_(42070272564).jpg" target="_blank" rel="noopener">Wellington Gabler, CC BY 2.0</a> · <a href="https://commons.wikimedia.org/wiki/File:Alter_do_Ch%C3%A3o_487a.jpg" target="_blank" rel="noopener">idobi, CC BY-SA 3.0</a>. Mapa: Esri World Imagery e World Street Map (© Esri, Maxar, HERE, Garmin, © colaboradores do OpenStreetMap). Posições de referência via Nominatim/OpenStreetMap.</p>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/5593991472330?text=Ol%C3%A1!%20Quero%20saber%20mais%20sobre%20o%20Horizonte%20Park." target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.5z"/></svg>
+</a>
+
+<!-- lightbox -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Visualizador de imagens" aria-hidden="true">
+  <button class="lb__btn lb__close" type="button" aria-label="Fechar">✕</button>
+  <button class="lb__btn lb__prev" type="button" aria-label="Anterior">←</button>
+  <img alt="">
+  <p class="lb__cap"></p>
+  <button class="lb__btn lb__next" type="button" aria-label="Próxima">→</button>
+</div>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script src="vendor/leaflet.js"></script>
+<script src="js/main.js"></script>
+<script src="js/masterplan3d.js"></script>
+</body>
+</html>
