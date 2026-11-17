@@ -2,7 +2,7 @@
 
 Página de apresentação do loteamento **Horizonte Park**, na Av. Eng. Fernando Guilhon, em Santarém (PA). O empreendimento se apresenta como a "primeira cidade inteligente do Oeste do Pará".
 
-Site estático e autocontido, sem etapa de build: basta servir a pasta (por exemplo, `python3 -m http.server`) ou publicá-la no GitHub Pages.
+Site estático e autocontido: abre com dois cliques no `index.html` (inclusive offline, exceto mapa e vídeo) ou publicado no GitHub Pages.
 
 ## O que tem
 
@@ -22,8 +22,9 @@ Site estático e autocontido, sem etapa de build: basta servir a pasta (por exem
 index.html
 css/style.css
 js/main.js            interações, ScrollTrigger, galeria, lightbox, mapa
-js/masterplan3d.js    maquete 3D procedural (módulo ES)
-vendor/               three 0.170, gsap 3.12.5, lenis 1.1.18, leaflet 1.9.4
+js/masterplan3d.js    maquete 3D (bundle gerado, inclui three 0.170)
+src/masterplan3d.js   fonte da maquete 3D
+vendor/               gsap 3.12.5, lenis 1.1.18, leaflet 1.9.4
 fonts/                Fraunces e Manrope (variáveis, auto-hospedadas)
 img/                  imagens otimizadas em WebP
 ```
@@ -34,3 +35,12 @@ img/                  imagens otimizadas em WebP
 - Fotos de Santarém (Wikimedia Commons): Wellington Gabler, CC BY 2.0; idobi, CC BY-SA 3.0.
 - Mapa: Esri World Imagery e World Street Map; coordenadas de referência via Nominatim/OpenStreetMap.
 - A maquete 3D é uma interpretação esquemática e não representa a planta aprovada.
+
+## Editar a maquete 3D
+
+O arquivo-fonte é `src/masterplan3d.js`. Depois de editar, gere o bundle (que funciona também via `file://`):
+
+```
+npm i three@0.170.0 esbuild
+npx esbuild src/masterplan3d.js --bundle --format=iife --minify --target=es2019 --outfile=js/masterplan3d.js
+```
