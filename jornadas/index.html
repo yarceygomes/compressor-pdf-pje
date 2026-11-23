@@ -89,6 +89,7 @@ input[type="time"],input[type="number"],input[type="date"]{font-family:var(--f-m
 input[type="checkbox"]{width:auto;accent-color:var(--accent)}
 input:disabled,select:disabled{color:var(--muted);background:var(--surface-2)}
 .btn{font:inherit;font-weight:500;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 12px;border-radius:4px;white-space:nowrap}
+a.btn{text-decoration:none;display:inline-block}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .btn.primary:hover{filter:brightness(1.08);color:var(--accent-ink)}
@@ -224,6 +225,13 @@ tfoot td{font-weight:600;background:var(--surface-2);border-top:1px solid var(--
 .dlg header{padding:14px 16px;border-bottom:1px solid var(--line-2)}
 .dlg .bd{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
 .dlg footer{padding:12px 16px;border-top:1px solid var(--line-2);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:12px 16px;border:1px dashed var(--accent);border-radius:var(--r);background:var(--accent-soft)}
+.banner p{max-width:75ch}
+.vazio{padding:36px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.vazio p{max-width:56ch;color:var(--muted)}
+.passos{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px;color:var(--muted)}
+.passos a{text-decoration:none;color:var(--muted);padding:2px 8px;border-radius:10px;border:1px solid var(--line)}
+.passos a.on{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:4px;font-size:13px;z-index:30}
 
 @media (max-width:720px){
@@ -317,7 +325,7 @@ const STORE = 'quadro-jornadas-v1';
 function exemplo() {
   const d = (aberto, abre, fecha, minimo) => ({ aberto, abre, fecha, minimo });
   return {
-    v: 1,
+    v: 1, exemplo: true,
     empresa: {
       nome: 'Farmácia Exemplo 24h Ltda.', atividade: 'comercio', inicio: proximaSegunda(), semanas: 4,
       dias: [d(true,'00:00','00:00',1), d(true,'00:00','00:00',1), d(true,'00:00','00:00',1), d(true,'00:00','00:00',1),
@@ -345,6 +353,17 @@ function exemplo() {
     distrib: { semanal: 44, dias: [1,1,1,1,1,1,0], modo: 'sabado', sabado: 4, personalizado: [8,8,8,8,8,4,0], entrada: '08:00', intervalo: 60, salario: 2500 },
     ajustes: {},
   };
+}
+function emBranco() {
+  const x = exemplo();
+  const d = (aberto, fecha) => ({ aberto, abre: '08:00', fecha, minimo: 1 });
+  x.exemplo = false;
+  x.empresa.nome = '';
+  x.empresa.dias = [d(true,'18:00'), d(true,'18:00'), d(true,'18:00'), d(true,'18:00'), d(true,'18:00'), d(true,'13:00'), d(false,'13:00')];
+  x.empresa.picos = []; x.empresa.feriados = [];
+  x.equipe = []; x.ajustes = {};
+  x.distrib = exemplo().distrib;
+  return x;
 }
 let S;
 try { S = JSON.parse(localStorage.getItem(STORE)); } catch (e) { S = null; }
@@ -753,11 +772,23 @@ const ord = s => ({ crit: 0, warn: 1, info: 2 }[s]);
 let G = null, R = null, sujo = true;
 function recalcular() { G = gerar(S); R = apurar(S, G); sujo = false; atualizarCabecalho(); }
 function garantir() { if (sujo || !G) recalcular(); }
-function mudou() { salvar(); sujo = true; }
+function mudou() {
+  if (S.exemplo) S.exemplo = false; salvar(); sujo = true;
+  const n = $('#id-nome'), q = $('#id-eq'); if (n) n.textContent = S.empresa.nome || '—'; if (q) q.textContent = S.equipe.length;
+}
+function passos(atual) {
+  const P = [['empresa', '1. Empresa e demanda'], ['equipe', '2. Equipe'], ['escala', '3. Escala'], ['apuracao', '4. Apuração'], ['conformidade', '5. Conformidade']];
+  return `<nav class="passos" aria-label="Etapas">${P.map(([k, t]) => `<a href="#${k}" class="${k === atual ? 'on' : ''}">${t}</a>`).join('<span aria-hidden="true">›</span>')}</nav>`;
+}
+function comecarDoZero() { S = emBranco(); salvar(); sujo = true; semana = 0; diaSel = 0; if (location.hash === '#empresa') rota(); else location.hash = 'empresa'; toast('Cadastro em branco: informe os dados da empresa'); }
+function bannerExemplo() {
+  return S.exemplo ? `<div class="banner"><p><b>Dados de exemplo.</b> Você está vendo uma farmácia fictícia. Para montar a jornada da sua empresa, comece um cadastro em branco: funcionamento, equipe e, em seguida, a escala.</p><button class="btn primary" data-comecar>Começar com minha empresa</button></div>` : '';
+}
+document.addEventListener('click', ev => { if (ev.target.closest('[data-comecar]')) comecarDoZero(); });
 
 function atualizarCabecalho() {
   const H = G.H, fim = addD(H.t0, H.D - 1);
-  $('#ident').innerHTML = `<span>Empresa <b>${esc(S.empresa.nome || '—')}</b></span><span>Período <b>${ddmm(H.t0)}–${ddmm(fim)}/${new Date(fim).getUTCFullYear()}</b></span><span>Equipe <b>${S.equipe.length}</b></span>`;
+  $('#ident').innerHTML = `<span>Empresa <b id="id-nome">${esc(S.empresa.nome || '—')}</b></span><span>Período <b>${ddmm(H.t0)}–${ddmm(fim)}/${new Date(fim).getUTCFullYear()}</b></span><span>Equipe <b id="id-eq">${S.equipe.length}</b></span>`;
   const n = R.pessoas.reduce((s, p) => s + p.alertas.filter(a => a.sev === 'crit').length, 0);
   const c = $('#cnt-alertas'); c.textContent = n; if (n) c.removeAttribute('data-zero'); else c.setAttribute('data-zero', '');
 }
@@ -788,6 +819,12 @@ function miniBar(sh, d) {
 const OFF_TXT = { folga: 'Folga', fechado: 'Fechado', escala: 'Descanso 36h', ajuste: 'Folga (ajuste)' };
 function renderEscala() {
   garantir();
+  if (!S.equipe.length) {
+    $('#v-escala').innerHTML = `${passos('escala')}${bannerExemplo()}<div class="view-head"><div><h2>Escala de revezamento</h2></div></div>
+    <div class="panel vazio"><h3>Nenhum colaborador cadastrado</h3><p>A escala é gerada a partir do horário de funcionamento da empresa e da equipe. Cadastre os colaboradores (um a um ou colando uma lista) e volte aqui.</p>
+    <div class="row" style="justify-content:center"><a class="btn" href="#empresa">Revisar funcionamento</a><a class="btn primary" href="#equipe">Cadastrar equipe</a></div></div>`;
+    return;
+  }
   const { H, sched, emps } = G, K = R.K, sem = S.empresa.semanas;
   if (semana >= sem) semana = 0;
   const d0 = semana * 7; if (diaSel < d0 || diaSel >= d0 + 7) diaSel = d0;
@@ -796,7 +833,7 @@ function renderEscala() {
   const badDay = {};
   R.pessoas.forEach((p, i) => p.alertas.filter(a => a.sev === 'crit').forEach(a => a.dias.forEach(l => badDay[i + '|' + l] = 1)));
   const v = $('#v-escala');
-  v.innerHTML = `
+  v.innerHTML = `${passos('escala')}${bannerExemplo()}
   <div class="view-head">
     <div><h2>Escala de revezamento</h2><p>Escala cíclica de ${sem} semanas gerada a partir da demanda de cobertura e dos regimes contratuais. Clique em uma célula para ajustar entrada ou folga; o restante da escala se reorganiza em torno do ajuste.</p></div>
     <div class="row">
@@ -933,7 +970,7 @@ function renderApuracao() {
   const P = R.pessoas, D = G.H.D, f = m => fmtNum(m / 60, 2);
   const sum = k => P.reduce((s, p) => s + p[k], 0), sumT = k => P.reduce((s, p) => s + p.T[k], 0);
   const tot = sum('total');
-  $('#v-apuracao').innerHTML = `
+  $('#v-apuracao').innerHTML = `${passos('apuracao')}
   <div class="view-head"><div><h2>Apuração do período</h2><p>Horas computadas com a redução ficta da hora noturna, horas extras sobre o módulo semanal, feriados não compensados, reflexos em DSR, FGTS e encargos. Período de ${D} dias, com ${R.dsrDias} dias de repouso (domingos e feriados) e ${R.uteis} dias úteis.</p></div>
   <button class="btn" id="ap-csv">Copiar tabela (CSV)</button></div>
   <div class="kpis">
@@ -999,7 +1036,7 @@ function renderConformidade() {
     const l = p.alertas.filter(a => ok(a.sev)); if (!l.length) return;
     blocos.push(`<div class="who">${esc(p.e.nome)} ${regChip(p.e.regime)}<span class="muted small" style="font-family:var(--f-body);font-weight:400">${esc(p.e.cargo)} · jornada de ${fmtDur(p.e.dur)}${p.e.brk ? ' + ' + p.e.brk + ' min' : ''}</span></div><div class="alerts">${l.map(alertaHTML).join('')}</div>`);
   });
-  $('#v-conformidade').innerHTML = `
+  $('#v-conformidade').innerHTML = `${passos('conformidade')}
   <div class="view-head"><div><h2>Conformidade</h2><p>Verificação da escala contra os limites de duração do trabalho, intervalos, repousos e regimes especiais. Infrações geram passivo; notas indicam requisitos formais (acordos, normas coletivas) que a escala pressupõe.</p></div>
     <div class="seg" role="group" aria-label="Filtro">${[['todos', 'Todos (' + todos.length + ')'], ['crit', 'Infrações (' + c('crit') + ')'], ['warn', 'Atenção (' + c('warn') + ')'], ['info', 'Notas (' + c('info') + ')']].map(([k, t]) => `<button data-f="${k}" aria-pressed="${filtroSev === k}">${t}</button>`).join('')}</div></div>
   <div class="panel">${blocos.join('') || '<div class="pb muted">Nenhum apontamento nesta categoria.</div>'}</div>`;
@@ -1013,11 +1050,11 @@ function renderEmpresa() {
   const E = S.empresa, P = E.params;
   const H = horizonte(S);
   const fer = H.days.filter(x => x.f);
-  $('#v-empresa').innerHTML = `
+  $('#v-empresa').innerHTML = `${passos('empresa')}${bannerExemplo()}
   <div class="view-head"><div><h2>Empresa e demanda</h2><p>Horário de funcionamento, efetivo mínimo e picos de movimento definem a curva de demanda que a escala procura cobrir. Os parâmetros remuneratórios seguem a lei e podem ser ajustados à convenção coletiva da categoria.</p></div>
-    <div class="row"><button class="btn" id="cfg-copiar">Copiar configuração</button><button class="btn" id="cfg-importar">Importar</button><button class="btn ghost" id="cfg-reset">Restaurar exemplo</button></div></div>
+    <div class="row"><button class="btn" id="cfg-copiar">Copiar configuração</button><button class="btn" id="cfg-importar">Importar</button><button class="btn" id="cfg-zero">Começar do zero</button><button class="btn ghost" id="cfg-reset">Restaurar exemplo</button><a class="btn primary" href="#equipe">Próximo: equipe</a></div></div>
   <div class="panel"><div class="ph"><h3>Identificação e período</h3></div><div class="pb fields">
-    <label class="f" style="grid-column:span 2"><span>Razão social</span><input id="e-nome" value="${esc(E.nome)}"></label>
+    <label class="f" style="grid-column:span 2"><span>Razão social</span><input id="e-nome" value="${esc(E.nome)}" placeholder="Nome da empresa"></label>
     <label class="f"><span>Atividade</span><select id="e-ativ">${[['comercio','Comércio'],['servicos','Serviços'],['industria','Indústria'],['saude','Saúde']].map(([k, t]) => `<option value="${k}" ${E.atividade === k ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
     <label class="f"><span>Início da escala (segunda-feira)</span><input type="date" id="e-ini" value="${esc(toISO(H.t0))}"></label>
     <label class="f"><span>Ciclo</span><select id="e-sem">${[2,3,4,5,6].map(n => `<option value="${n}" ${E.semanas == n ? 'selected' : ''}>${n} semanas</option>`).join('')}</select></label>
@@ -1088,33 +1125,84 @@ function renderEmpresa() {
     try { const o = JSON.parse($('#cfg-txt').value); if (!o || o.v !== 1 || !o.empresa || !Array.isArray(o.equipe)) throw 0; S = o; S.ajustes = S.ajustes || {}; mudou(); renderEmpresa(); toast('Configuração carregada'); }
     catch (e) { $('#cfg-msg').textContent = 'O texto colado não é uma configuração válida do Quadro de Jornadas.'; }
   };
+  const zb = $('#cfg-zero');
+  zb.onclick = () => {
+    if (S.exemplo || zb.dataset.armed) { comecarDoZero(); return; }
+    zb.dataset.armed = 1; zb.textContent = 'Confirmar: apagar dados atuais'; zb.style.color = 'var(--crit)';
+    setTimeout(() => { if (zb.isConnected) { delete zb.dataset.armed; zb.textContent = 'Começar do zero'; zb.style.color = ''; } }, 4000);
+  };
   const rs = $('#cfg-reset');
   rs.onclick = () => {
-    if (rs.dataset.armed) { S = exemplo(); mudou(); renderEmpresa(); toast('Exemplo restaurado'); return; }
+    if (rs.dataset.armed) { S = exemplo(); salvar(); sujo = true; renderEmpresa(); toast('Exemplo restaurado'); return; }
     rs.dataset.armed = 1; rs.textContent = 'Confirmar: apagar dados atuais'; rs.style.color = 'var(--crit)';
     setTimeout(() => { if (rs.isConnected) { delete rs.dataset.armed; rs.textContent = 'Restaurar exemplo'; rs.style.color = ''; } }, 4000);
   };
 }
-function atualizarIdent() { const b = $('#ident b'); if (b) b.textContent = S.empresa.nome || '—'; }
+function atualizarIdent() { const b = $('#id-nome'); if (b) b.textContent = S.empresa.nome || '—'; }
 
 /* ====================================================================
    Visão: Equipe
    ==================================================================== */
+let novoPadrao = { cargo: '', regime: '6x1', semanal: 44, salario: '', turno: 'livre', entrada: '' };
+function normRegime(t) { t = String(t || '').toLowerCase().replace(/\s/g, ''); return t.includes('12') ? '12x36' : t.includes('5') ? '5x2' : '6x1'; }
+function normTurno(t) { t = String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); return t.startsWith('man') ? 'manha' : t.startsWith('tar') ? 'tarde' : t.startsWith('noi') ? 'noite' : 'livre'; }
+function numBR(t) { if (t == null || t === '') return NaN; t = String(t).replace(/[R$\s]/g, ''); if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.'); return +t; }
+function normHora(t) { const m = String(t || '').trim().match(/^(\d{1,2})(?:[:hH](\d{2})?)?$/); if (!m || +m[1] > 23 || +(m[2] || 0) > 59) return ''; return String(+m[1]).padStart(2, '0') + ':' + (m[2] || '00'); }
+function novoColab(o) {
+  const regime = normRegime(o.regime);
+  let semanal = regime === '12x36' ? 42 : numBR(o.semanal);
+  if (!(semanal > 0)) semanal = 44;
+  semanal = Math.min(44, Math.max(1, semanal));
+  const sal = numBR(o.salario);
+  return { id: uid(), nome: String(o.nome).trim(), cargo: String(o.cargo || '').trim(), regime, semanal, salario: sal >= 0 ? sal : 0, turno: normTurno(o.turno), domingo: 'padrao', entrada: normHora(o.entrada) };
+}
+/* Lista colada: uma linha por pessoa — Nome; Cargo; Regime; Carga semanal; Salário; Turno; Entrada (separador ; ou tabulação) */
+function lerLista(txt) {
+  const ok = [], erros = [];
+  String(txt || '').split(/\r?\n/).forEach((l, n) => {
+    if (!l.trim()) return;
+    const c = l.split(/\t|;/).map(x => x.trim());
+    if (!c[0]) { erros.push(n + 1); return; }
+    if (n === 0 && /^nome$/i.test(c[0])) return; // cabeçalho
+    ok.push(novoColab({ nome: c[0], cargo: c[1], regime: c[2], semanal: c[3], salario: c[4], turno: c[5], entrada: c[6] }));
+  });
+  return { ok, erros };
+}
 function renderEquipe() {
-  const P = S.empresa.params;
+  const P = S.empresa.params, N = novoPadrao;
   const folha = S.equipe.reduce((s, e) => s + (+e.salario || 0), 0);
   const cnt = r => S.equipe.filter(e => e.regime === r).length;
-  $('#v-equipe').innerHTML = `
+  $('#v-equipe').innerHTML = `${passos('equipe')}${bannerExemplo()}
   <div class="view-head"><div><h2>Equipe</h2><p>Regime de revezamento, carga semanal contratada e turno de preferência de cada colaborador. A jornada diária decorre do regime: 44h em 6x1 resultam em 7h20; em 5x2, em 8h48 com compensação do sábado.</p></div>
-    <button class="btn primary" id="eq-add">Adicionar colaborador</button></div>
+    ${S.equipe.length ? `<a class="btn primary" href="#escala" id="eq-gerar">Gerar escala com ${S.equipe.length} colaborador${S.equipe.length > 1 ? 'es' : ''}</a>` : ''}</div>
+  <form class="panel" id="eq-form" autocomplete="off" novalidate>
+    <div class="ph"><h3>Adicionar colaborador</h3><button type="button" class="btn sm" id="eq-lote-btn">Colar lista</button></div>
+    <div class="pb fields">
+      <label class="f" style="grid-column:span 2"><span>Nome</span><input id="n-nome" placeholder="Nome completo"></label>
+      <label class="f"><span>Cargo</span><input id="n-cargo" value="${esc(N.cargo)}" placeholder="Ex.: Atendente"></label>
+      <label class="f"><span>Regime</span><select id="n-regime">${['6x1','5x2','12x36'].map(r => `<option ${N.regime === r ? 'selected' : ''}>${r}</option>`).join('')}</select></label>
+      <label class="f"><span>Carga semanal (h)</span><input type="number" id="n-semanal" value="${N.regime === '12x36' ? 42 : N.semanal}" min="1" max="44" ${N.regime === '12x36' ? 'disabled' : ''}></label>
+      <label class="f"><span>Salário mensal (R$)</span><input type="number" id="n-salario" value="${esc(N.salario)}" min="0" step="50" placeholder="0,00"></label>
+      <label class="f"><span>Turno</span><select id="n-turno">${Object.entries(TURNO_NOME).map(([k, t]) => `<option value="${k}" ${N.turno === k ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+      <label class="f"><span>Entrada fixa (opcional)</span><input type="time" id="n-entrada" value="${esc(N.entrada)}" step="900"></label>
+      <div style="align-self:end;display:flex;flex-direction:column;gap:4px"><button class="btn primary" type="submit" id="n-ok">Adicionar à equipe</button></div>
+    </div>
+    <p class="note" id="n-msg" style="padding:0 16px 12px" aria-live="polite">Cargo, regime, carga, salário e turno ficam preenchidos para o próximo cadastro.</p>
+  </form>
+  <div class="panel" id="eq-lote" hidden><div class="ph"><h3>Colar lista de colaboradores</h3><button type="button" class="btn ghost sm" id="eq-lote-x">Fechar</button></div>
+    <div class="pb" style="display:flex;flex-direction:column;gap:10px">
+      <p class="note">Uma pessoa por linha, campos separados por ponto e vírgula ou tabulação (copiar de uma planilha funciona): <span class="mono">Nome; Cargo; Regime; Carga semanal; Salário; Turno; Entrada</span>. Só o nome é obrigatório; o restante assume 6x1, 44h, turno livre.</p>
+      <textarea id="eq-lote-txt" rows="6" placeholder="Maria Silva; Atendente; 6x1; 44; 2100; manhã&#10;José Lima; Vigia; 12x36; ; 2300; noite; 19:00&#10;Ana Costa; Caixa; 5x2; 40; 1950; tarde"></textarea>
+      <div class="row"><button type="button" class="btn primary" id="eq-lote-ok">Adicionar lista</button><span class="muted small" id="eq-lote-msg" aria-live="polite"></span></div>
+    </div></div>
   <div class="kpis">
     <div class="kpi"><span class="k">Colaboradores</span><span class="v">${S.equipe.length}</span><span class="s">${cnt('6x1')} em 6x1 · ${cnt('5x2')} em 5x2 · ${cnt('12x36')} em 12x36</span></div>
     <div class="kpi"><span class="k">Folha base mensal</span><span class="v">${brl(folha)}</span><span class="s">sem adicionais e encargos</span></div>
     <div class="kpi"><span class="k">Capacidade semanal</span><span class="v">${fmtNum(S.equipe.reduce((s, e) => s + (e.regime === '12x36' ? (P.int12 === 'usufruido' ? 38.5 : 42) : +e.semanal || 0), 0), 0)} h</span><span class="s">horas efetivas contratadas</span></div>
   </div>
-  <div class="panel"><div class="pb flush scroll"><table class="tbl-edit" style="min-width:1100px">
+  <div class="panel"><div class="pb flush scroll"><table class="tbl-edit" style="min-width:1100px" id="eq-tabela">
     <thead><tr><th>Nome</th><th>Cargo</th><th>Regime</th><th class="n">Carga semanal</th><th>Jornada diária</th><th class="n">Salário (R$)</th><th>Turno</th><th>Entrada fixa</th><th>Folga dominical</th><th></th></tr></thead>
-    <tbody>${S.equipe.map((e, i) => { const p = prepEmp(e, P); return `<tr>
+    <tbody>${S.equipe.length ? S.equipe.map((e, i) => { const p = prepEmp(e, P); return `<tr>
       <td><input data-i="${i}" data-f="nome" value="${esc(e.nome)}" aria-label="Nome"></td>
       <td><input data-i="${i}" data-f="cargo" value="${esc(e.cargo)}" aria-label="Cargo"></td>
       <td><select data-i="${i}" data-f="regime" aria-label="Regime">${['6x1','5x2','12x36'].map(r => `<option ${e.regime === r ? 'selected' : ''}>${r}</option>`).join('')}</select></td>
@@ -1124,7 +1212,7 @@ function renderEquipe() {
       <td><select data-i="${i}" data-f="turno" aria-label="Turno">${Object.entries(TURNO_NOME).map(([k, t]) => `<option value="${k}" ${e.turno === k ? 'selected' : ''}>${t}</option>`).join('')}</select></td>
       <td><input type="time" data-i="${i}" data-f="entrada" value="${esc(e.entrada || '')}" step="900" aria-label="Entrada fixa" title="Vazio: o motor escolhe" style="width:104px"></td>
       <td><select data-i="${i}" data-f="domingo" aria-label="Folga dominical" ${e.regime === '12x36' ? 'disabled' : ''}><option value="padrao" ${e.domingo !== 'quinzenal' ? 'selected' : ''}>Regra da empresa</option><option value="quinzenal" ${e.domingo === 'quinzenal' ? 'selected' : ''}>Quinzenal (art. 386)</option></select></td>
-      <td><button class="btn ghost sm" data-rm="${i}">Remover</button></td></tr>`; }).join('')}</tbody>
+      <td><button class="btn ghost sm" data-rm="${i}">Remover</button></td></tr>`; }).join('') : '<tr><td colspan="10" class="muted" style="padding:20px 12px">Nenhum colaborador cadastrado. Use o formulário acima ou cole uma lista.</td></tr>'}</tbody>
   </table></div></div>
   <p class="note">Turnos: manhã inicia entre 5h e 9h; tarde, entre 11h e 15h; noite, entre 17h e 23h; livre deixa o motor escolher o horário que melhor cobre a demanda. A entrada fixa, quando preenchida, prevalece sobre o turno. Carga semanal até 30h caracteriza tempo parcial (art. 58-A). No 12x36, a carga é a média de 42 horas semanais.</p>`;
   const v = $('#v-equipe');
@@ -1132,15 +1220,35 @@ function renderEquipe() {
     const e = S.equipe[+el.dataset.i], f = el.dataset.f;
     e[f] = ['semanal', 'salario'].includes(f) ? Math.max(0, +el.value) : el.value;
     if (f === 'semanal') e.semanal = Math.min(44, Math.max(1, e.semanal));
+    if (f === 'regime' && e.regime === '12x36') e.semanal = 42;
     mudou();
     if (['regime', 'semanal'].includes(f)) renderEquipe();
   }));
   $$('[data-rm]', v).forEach(b => b.onclick = () => {
     const e = S.equipe.splice(+b.dataset.rm, 1)[0];
     Object.keys(S.ajustes || {}).forEach(k => { if (k.startsWith(e.id + '|')) delete S.ajustes[k]; });
-    mudou(); renderEquipe();
+    mudou(); renderEquipe(); toast(`${e.nome} removido da equipe`);
   });
-  $('#eq-add').onclick = () => { S.equipe.push({ id: uid(), nome: 'Novo colaborador', cargo: 'Atendente', regime: '6x1', semanal: 44, salario: 2000, turno: 'livre', domingo: 'padrao' }); mudou(); renderEquipe(); const ins = $$('[data-f="nome"]', v); ins[ins.length - 1].select(); };
+  $('#n-regime').onchange = ev => { const d = ev.target.value === '12x36'; const c = $('#n-semanal'); c.disabled = d; c.value = d ? 42 : (novoPadrao.semanal || 44); };
+  $('#eq-form').onsubmit = ev => {
+    ev.preventDefault();
+    const nome = $('#n-nome').value.trim();
+    if (!nome) { $('#n-msg').textContent = 'Informe o nome do colaborador.'; $('#n-msg').style.color = 'var(--crit)'; $('#n-nome').focus(); return; }
+    const o = { nome, cargo: $('#n-cargo').value, regime: $('#n-regime').value, semanal: $('#n-semanal').value, salario: $('#n-salario').value, turno: $('#n-turno').value, entrada: $('#n-entrada').value };
+    const c = novoColab(o);
+    S.equipe.push(c);
+    novoPadrao = { cargo: c.cargo, regime: c.regime, semanal: c.regime === '12x36' ? novoPadrao.semanal : c.semanal, salario: o.salario, turno: c.turno, entrada: '' };
+    mudou(); renderEquipe(); toast(`${c.nome} adicionado`);
+    $('#n-nome').focus();
+  };
+  $('#eq-lote-btn').onclick = () => { $('#eq-lote').hidden = false; $('#eq-lote-txt').focus(); };
+  $('#eq-lote-x').onclick = () => { $('#eq-lote').hidden = true; };
+  $('#eq-lote-ok').onclick = () => {
+    const r = lerLista($('#eq-lote-txt').value);
+    if (!r.ok.length) { $('#eq-lote-msg').textContent = 'Nenhuma linha válida: cada linha precisa começar pelo nome.'; return; }
+    S.equipe.push(...r.ok); mudou(); renderEquipe();
+    toast(`${r.ok.length} colaborador${r.ok.length > 1 ? 'es adicionados' : ' adicionado'}${r.erros.length ? ` · ${r.erros.length} linha(s) ignorada(s)` : ''}`);
+  };
 }
 
 /* ====================================================================
