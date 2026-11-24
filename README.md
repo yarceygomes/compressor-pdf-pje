@@ -10,7 +10,7 @@ A página é um arquivo HTML único, com o **Ghostscript** compilado para WebAss
 
 ## Outros projetos neste repositório
 
-- **[Quadro de Jornadas](https://yarceygomes.github.io/compressor-pdf-pje/jornadas/)** — distribuição de jornadas, escalas de revezamento, apuração de horas e conformidade com a CLT (`jornadas/`).
+- **[Quadro de Jornadas](https://yarceygomes.github.io/compressor-pdf-pje/jornadas/)** — escalas de trabalho já adequadas ao fim da 6x1 (EC 141/2026), cenários de menor custo para o empresário, apuração, conformidade e relatório em PDF (`jornadas/`).
 
 ## Créditos e licença
 
